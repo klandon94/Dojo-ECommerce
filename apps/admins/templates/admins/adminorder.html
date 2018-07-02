@@ -1,0 +1,90 @@
+{% extends 'admins/adminindex.html' %}
+
+{% block title %} Order # {% endblock %}
+
+{% block order %}
+
+<nav class='navbar navbar-dark' style='background-color:red;'>
+    <div class='container-fluid'>
+        <div class='nav navbar-nav navbar-header'>
+            <a class='navbar-brand active' href='#'>Admin Dashboard</a>             
+            <li><a href='{% url 'adminorders' %}'><span class='glyphicon glyphicon-barcode'></span> Orders</a></li>
+            <li><a href='{% url 'adminproducts' %}'><span class='glyphicon glyphicon-tag'></span> Products</a></li>
+        </div>
+        <ul class='nav navbar-nav navbar-right'>                
+            <li><a href='{% url 'adminlogout' %}'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>                        
+        </ul>
+    </div>
+</nav>
+
+<div class='col-md-3' id='orderinfo'>
+    <p class='orderid'>Order ID: #1</p>
+    <br>
+    <b>Customer shipping info</b>:
+    <p>Name: Kenny</p>
+    <p>Address: 1234 Dojo Way </p>
+    <p>City: McLean</p>
+    <p>State: VA</p>
+    <p>Zip: 22102</p>
+    <br>
+    <b>Customer billing info</b>:
+    <p>Name: Kenny</p>
+    <p>Address: 1234 Dojo Way </p>
+    <p>City: McLean</p>
+    <p>State: VA</p>
+    <p>Zip: 22102</p>
+</div>
+
+<div class='col-md-8'>
+    <table class='table table-bordered table-striped table-hover'>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Item</th>                
+                <th>Price</th>                
+                <th>Quantity</th>
+                <th>Total</th>            
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>2</td>                
+                <td>Apple</td>
+                <td>$80</td>
+                <td>3</td>
+                <td>$240</td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td>5</td>
+                <td>Monkey</td>
+                <td>$200</td>
+                <td>5</td>
+                <td>$1000</td>
+            </tr>
+        </tbody>           
+        <tbody>
+            <tr>
+                <td>10</td>
+                <td>Lord of the Rings</td>
+                <td>$150</td>
+                <td>2</td>
+                <td>$300</td>
+            </tr>
+        </tbody>           
+    </table>
+
+    <div id='status'>
+        <h2>SHIPPED</h2>
+    </div>
+
+    <div id='priceinfo'>
+        <p>Subtotal: $1540</p>
+        <p>Shipping: $5</p>
+        <p>Total Price: $1545</p>
+    </div>
+
+</div>
+
+{% endblock %}

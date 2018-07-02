@@ -1,0 +1,48 @@
+{% extends 'admins/adminindex.html' %}
+
+{% block title %} Admin Login Page {% endblock %}
+
+{% block adminlogin %}
+
+{% if messages %}
+    {% for message in messages %}
+        {% if message.extra_tags == 'adlogout' %}
+            <p class="{{message.tags}}">{{message}}</p>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+<div id='contain'>
+    <div id='adminlogin'>
+        <h2>Admin Login</h2>
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.extra_tags == 'adlogin' %}
+                    <p class="{{message.tags}}">{{message}}</p>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <form action='{% url 'adminlogin' %}' method='post'>
+            {% csrf_token %}
+            <div class='form-group'>
+                <label for='admin_email'>Email:</label>
+                <input type='text' name='admin_email' id='admin_email' class='form-control' value='{{request.session.admin_email}}' placeholder='email'>
+            </div>
+            <div class='form-group'>
+                <label for='adminpw'>Password</label>
+                <input type='password' name='adminpw' id='adminpw' class='form-control' placeholder='password'>
+            </div>
+            <input type='submit' class='btn btn-primary center-block'>
+        </form>
+    </div>
+</div>
+<div id='adminlogo'>
+    <center>
+        {% load static %}
+        <img src="{% static "customers/coding_dojo_logo_black.png" %}" alt='dojologo'>
+        <img src="{% static "customers/download.png" %}" alt='ecommerce'>
+    </center>
+    <a id='gohome' href='{% url 'mainpage' %}' class='btn btn-success'>Go to home page</a>
+</div>
+
+{% endblock %}

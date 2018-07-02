@@ -1,0 +1,173 @@
+{% extends 'customers/custindex.html' %}
+
+{% block title %} Dojo ECommerce Home {%endblock%}
+
+{% block mainpage %}
+
+<nav class='navbar navbar-inverse'>
+    <div class='container-fluid'>
+        <div class='navbar-header'>
+            <a class='navbar-brand active' href='#'>CodingDojo E-Commerce</a>
+        </div>
+        <ul class='nav navbar-nav navbar-right menu'>
+            <li><a href="#" data-toggle="modal" data-target="#login-modal"><span class='glyphicon glyphicon-log-in'></span> Login</a></li>
+            <li><a href="#" data-toggle='modal' data-target='#register-modal'>Register</a></li>              
+        </ul>
+    </div>
+</nav>
+{% if messages %}
+    {% for message in messages %}
+        {% if message.extra_tags == 'logout' %}
+            <p class="{{message.tags}}">{{message}}</p>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="Login">Customer login</h4>
+            </div>
+            <div class="modal-body">
+                <form action='{% url 'customerlogin' %}' method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.extra_tags == 'login' %}
+                                    <p class="{{message.tags}}">{{message}}</p>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <label for='login_email'>Email</label>
+                        <input type="text" class="form-control" name='login_email' id="login_email" placeholder="email">
+                    </div>
+                    <div class="form-group">
+                        <label for='login_password'>Password</label>
+                        <input type="password" class="form-control" name='login_password' id="login_password" placeholder="password">
+                    </div>
+                    <p class="text-center">
+                        <button class="btn btn-success" type='submit'>Log in</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="Register" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="Login">New customer registration</h4>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'register' %}" method="post" id='registrar'>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.extra_tags == 'first_name' %}
+                                    <p class="{{message.tags}}">{{message}}</p>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <label for='first'>First Name</label>
+                        <input type="text" class="form-control" name='first_name' id="first" placeholder="first name" value='{{request.session.first_name}}'>
+                    </div>
+                    <div class="form-group">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.extra_tags == 'last_name' %}
+                                    <p class="{{message.tags}}">{{message}}</p>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <label for='last'>Last Name</label>
+                        <input type="text" class="form-control" name='last_name' id="last" placeholder="last name" value='{{request.session.last_name}}'>
+                    </div>
+                    <div class="form-group">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.extra_tags == 'reg_email' %}
+                                    <p class="{{message.tags}}">{{message}}</p>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <label for='email'>Email</label>
+                        <input type="text" class="form-control" name='reg_email' id="email" placeholder="email" value='{{request.session.reg_email}}'>
+                    </div>
+                    <div class="form-group">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.extra_tags == 'reg_password' %}
+                                    <p class="{{message.tags}}">{{message}}</p>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <label for='password'>Password</label>
+                        <input type="password" class="form-control" name='reg_password' id="password" placeholder="password">
+                    </div>
+                    <div class="form-group">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.extra_tags == 'reg_confirm' %}
+                                    <p class="{{message.tags}}">{{message}}</p>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <label for='confirm'>Confirm password</label>
+                        <input type="password" class="form-control" name='reg_confirm' id="confirm" placeholder="confirm password">
+                    </div>
+                    <p class="text-center">
+                        <button class="btn btn-success" type='submit'>Register</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">Welcome to Coding Dojo E-commerce</h1>
+        <br>
+        <p class="lead text-muted">Enter the world's premier e-commerce website for CodingDojo goods</p>
+    </div>
+</section>
+
+<div id='mainpics'>
+    <center>
+    {% load static %}
+    <img src="{% static "customers/coding_dojo_logo_black.png" %}" alt='dojologo'>
+    <img src="{% static "customers/download.png" %}" alt='ecommerce'>
+    </center>
+</div>
+
+<footer class="page-footer font-small unique-color-dark mt-4" style='background-color:lightgrey'>
+    <div class="container text-center text-md-left mt-5">
+        <div class="row mt-3">
+        <div class="col-md-6 mx-auto">
+            <h6 class="text-uppercase font-weight-bold">Information</h6>
+            <hr class="accent-2 mb-4 mt-0 d-inline-block mx-auto">
+            <p>Explore the world's biggest selection of CodingDojo products. Register to keep track of your orders and save your favorite items. Purchase unique fruits, animals, and more!</p>
+        </div>
+        <div class="col-md-6 mx-auto">
+            <h6 class="text-uppercase font-weight-bold">Contact Information</h6>
+            <hr class="accent-2 mb-4 mt-0 d-inline-block mx-auto">
+            <p><i class="glyphicon glyphicon-home mr-3"></i> Tysons Corner, Virginia, United States</p>
+            <p><i class="glyphicon glyphicon-envelope mr-3"></i> info@example.com</p>
+            <p><i class="glyphicon glyphicon-earphone mr-3"></i> + 01 234 567 88</p>
+        </div>
+        </div>
+    </div>
+    <div class="footer-copyright text-center py-3">
+        <a href='{% url 'adminmain' %}' class='text-uppercase font-weight-bold'>Admin login</a>
+        <br><br>
+        © 2018 Ksahn81x7
+    </div>
+</footer>
+
+
+{% endblock %}

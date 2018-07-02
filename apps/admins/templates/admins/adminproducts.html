@@ -1,0 +1,205 @@
+{% extends 'admins/adminindex.html' %}
+
+{% block title %} Admin Products {% endblock %}
+
+{% block adminproducts %}
+
+<nav class='navbar navbar-dark' style='background-color:red;'>
+    <div class='container-fluid'>
+        <div class='nav navbar-nav navbar-header'>
+            <a class='navbar-brand active' href='#'>Admin Dashboard</a>             
+            <li><a href='{% url 'adminorders' %}'><span class='glyphicon glyphicon-barcode'></span> Orders</a></li>
+            <li><a href='{% url 'adminproducts' %}'><span class='glyphicon glyphicon-tag'></span> Products</a></li>
+        </div>
+        <ul class='nav navbar-nav navbar-right'>                
+            <li><a href='{% url 'adminlogout' %}'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>                        
+        </ul>
+    </div>
+</nav>
+
+<form action='#' method='post' class='form-inline' id='productsearcher'>
+    <label for='searchby'>Search by:</label>
+    <select name="searchby" class="form-group" id='searchby'>
+        <option>Product ID</option>
+        <option>Product Name</option>                   
+        <option>Category</option>              
+    </select>
+    <br><br>
+    <input class='form-group' type='search' name='adminsearchp'>
+    <button type='submit'><span class='glyphicon glyphicon-search'></span></button>
+</form>
+
+<a id='addprod' href='#' data-toggle='modal' data-target='#add-modal' class='btn btn-success pull-right'>Add new product</a>
+
+<table id='products' class='table table-bordered table-striped table-hover'>
+    <col width='150'>
+    <col width='100'>
+    <col width='180'>
+    <col width='150'>
+    <col width='120'>
+    <col width='120'>
+    <thead>
+        <tr>
+            <th>Picture</th>                
+            <th>ID</th>                
+            <th>Name</th>
+            <th>Category</th>
+            <th>Inventory Count</th>
+            <th>Quantity Sold</th>            
+            <th>Action</th>            
+        </tr>
+    </thead>
+    {% for product in allproducts %}   
+    <tbody>
+        <tr>                    
+            <td><img class='adminimg' src={{product.image.url}} alt='{{product.name}}'></td>
+            <td><a href='{% url 'oneprod' id=product.id %}'><b>{{product.id}}</b></a></td>
+            <td>{{product.name}}</td>
+            <td>{{product.category | title}}</td>
+            <td>{{product.inventory}}</td>
+            <td>{{product.quantity_sold}}</td>
+            <td class='edit'><a href="#" data-toggle="modal" data-target="#edit-modal" data-blah='{{product.id}}'> Edit</a> <a href="#" data-toggle='modal' data-target='#delete-modal' data-blah2='{{product.id}}'>Delete</a></td>
+        </tr>
+    </tbody>    
+    {% endfor %}                           
+</table>
+
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="Edit" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="Login">Edit Product - ID</h4>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for='editname'>Name</label>
+                        <input type="text" name='editname' class="form-control" id="editname" placeholder="name">
+                    </div>
+                    <div class="form-group">
+                        <label for='editdesc'>Description</label>
+                        <textarea name='editdesc' id='editdesc' class='form-control' rows='3' placeholder='description'></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for='editcat'>Category</label>
+                        <select name='editcat' id='editcat' class='form-control' rows='3'>
+                            <option value='fruits'>Fruits</option>
+                            <option value='animals'>Animals</option>
+                            <option value='vidgames'>Video Games</option>
+                            <option value='books'>Books</option>
+                            <option value='jerseys'>Jerseys</option>
+                            <option value='misc'>Miscellaneous</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for='newcat'>Or add a new category</label>
+                        <input type='text' name='newcat' id='newcat' placeholder='new category' class='form-control'>
+                    </div>
+                    <div class="form-group">
+                        <label for='newimg'>Upload image</label>
+                        <input type="file" name='newimg' id="newimg">
+                    </div>
+                </form>
+            </div>
+            <div class='modal-footer'>
+                <div id='editer'>
+                    <button class='btn btn-info form-inline' data-dismiss='modal'>Cancel</button>
+                    <form action='#' method='post'>
+                        <button class='btn btn-success' type='submit'>Preview</button>
+                    </form>
+                    <form action='#' method='post'>
+                        <button class='btn btn-primary' type='submit'>Update</button>   
+                    </form>                                                 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="Edit" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="Login">Add new product</h4>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for='editname'>Name</label>
+                        <input type="text" name='editname' class="form-control" id="editname" placeholder="name">
+                    </div>
+                    <div class="form-group">
+                        <label for='editdesc'>Description</label>
+                        <textarea name='editdesc' id='editdesc' class='form-control' rows='3' placeholder='description'></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for='editcat'>Category</label>
+                        <select name='editcat' id='editcat' class='form-control' rows='3'>
+                            <option value='fruits'>Fruits</option>
+                            <option value='animals'>Animals</option>
+                            <option value='vidgames'>Video Games</option>
+                            <option value='books'>Books</option>
+                            <option value='jerseys'>Jerseys</option>
+                            <option value='misc'>Miscellaneous</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for='newcat'>Or add a new category</label>
+                        <input type='text' name='newcat' id='newcat' placeholder='new category' class='form-control'>
+                    </div>
+                    <div class="form-group">
+                        <label for='newimg'>Upload image</label>
+                        <input type="file" name='newimg' id="newimg">
+                    </div>
+                </form>
+            </div>
+            <div class='modal-footer'>
+                <div id='editer'>
+                    <button class='btn btn-info form-inline' data-dismiss='modal'>Cancel</button>
+                    <form action='#' method='post'>
+                        <button class='btn btn-success' type='submit'>Preview</button>
+                    </form>
+                    <form action='#' method='post'>
+                        <button class='btn btn-primary' type='submit'>Add</button>   
+                    </form>                                                 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="Delete" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="Delete">Are you sure you want to delete product __?</h4>
+            </div>
+            <div class="modal-footer">
+                <div id='deleter'>
+                    <button class='btn btn-info form-inline' data-dismiss='modal'>Cancel</button>
+                    <form action="#" method="post">
+                        <button class="btn btn-danger" type='submit'>Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<center>
+    <div id='pagenumbers'>
+        <h2>
+        <ul class="pagination">
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&raquo;</a></li>
+        </ul>
+        </h2>
+    </div>
+</center>
+
+{% endblock %}

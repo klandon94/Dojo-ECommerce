@@ -1,0 +1,127 @@
+{% extends 'admins/adminindex.html' %}
+
+{% block title %} Admin Orders {% endblock %}
+
+{% block adminorders %}
+
+<nav class='navbar navbar-dark' style='background-color:red;'>
+    <div class='container-fluid'>
+        <div class='nav navbar-nav navbar-header'>
+            <a class='navbar-brand active' href='#'>Admin Dashboard</a>             
+            <li><a href='{% url 'adminorders' %}'><span class='glyphicon glyphicon-barcode'></span> Orders</a></li>
+            <li><a href='{% url 'adminproducts' %}'><span class='glyphicon glyphicon-tag'></span> Products</a></li>
+        </div>
+        <ul class='nav navbar-nav navbar-right'>                
+            <li><a href='{% url 'adminlogout' %}'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>                        
+        </ul>
+    </div>
+</nav>
+
+<form action='#' method='' class='form-inline' id='ordersearcher'>
+    {% csrf_token %}
+    <label for='searchby'>Search by:</label>
+    <select name="searchby" class="form-group" id='searchby'>
+        <option>Order ID</option>
+        <option>Customer Name</option>                                            
+        <option>Date</option>                                            
+    </select>
+    <br><br>
+    <input class='form-group' type='search' name='adminsearcho'>
+    <button type='submit'><span class='glyphicon glyphicon-search'></span></button>
+</form>
+
+<table id='orders' class='table table-bordered table-striped table-hover'>
+    <col width='100'>
+    <col width='150'>
+    <col width='120'>
+    <col width='450'>
+    <col width='150'>
+    <thead>
+        <tr>
+            <th>Order ID</th>                
+            <th>Name</th>                
+            <th>Date</th>
+            <th>Billing Address</th>
+            <th>Total</th>            
+            <th>Status</th>            
+        </tr>
+    </thead>
+    <tbody>
+        <tr>                    
+            <td><a href='#'><b>1</b></a></td>
+            <td>Kenny</td>
+            <td>6/26/18</td>
+            <td>1234 Coding Dojo Way McLean, VA</td>
+            <td>$1540</td>
+            <td>Order in progress</td>
+        </tr>
+    </tbody>         
+    <tbody>
+        <tr>                    
+            <td><a href='#'><b>1</b></a></td>
+            <td>Kenny</td>
+            <td>6/26/18</td>
+            <td>1234 Coding Dojo Way McLean, VA</td>
+            <td>$1540</td>
+            <td>Order in progress</td>
+        </tr>
+    </tbody>         
+    <tbody>
+        <tr>                    
+            <td><a href='#'><b>1</b></a></td>
+            <td>Kenny</td>
+            <td>6/26/18</td>
+            <td>1234 Coding Dojo Way McLean, VA</td>
+            <td>$1540</td>
+            <td>Order in progress</td>
+        </tr>
+    </tbody>         
+    <tbody>
+        <tr>                    
+            <td><a href='#'><b>1</b></a></td>
+            <td>Kenny</td>
+            <td>6/26/18</td>
+            <td>1234 Coding Dojo Way McLean, VA</td>
+            <td>$1540</td>
+            <td>Order in progress</td>
+        </tr>
+    </tbody>         
+    <tbody>
+        <tr>                    
+            <td><a href='#'><b>1</b></a></td>
+            <td>Kenny</td>
+            <td>6/26/18</td>
+            <td>1234 Coding Dojo Way McLean, VA</td>
+            <td>$1540</td>
+            <td>Order in progress</td>
+        </tr>
+    </tbody>         
+    <tbody>
+        <tr>                    
+            <td><a href='#'><b>1</b></a></td>
+            <td>Kenny</td>
+            <td>6/26/18</td>
+            <td>1234 Coding Dojo Way McLean, VA</td>
+            <td>$1540</td>
+            <td>Order in progress</td>
+        </tr>
+    </tbody>         
+</table>
+
+
+<center>
+    <div id='pagenumbers'>
+        <h2>
+        <ul class="pagination">
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&raquo;</a></li>
+        </ul>
+        </h2>
+    </div>
+</center>
+
+{% endblock %}

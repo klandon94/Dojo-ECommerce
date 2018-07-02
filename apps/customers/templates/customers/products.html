@@ -1,0 +1,84 @@
+{% extends 'customers/custindex.html' %}
+
+{% block title %} All Products {%endblock%}
+
+{% block products %}
+
+<nav class='navbar navbar-inverse'>
+    <div class='container-fluid'>
+        <div class='nav navbar-nav navbar-header'>
+            <a class='navbar-brand active' href='{% url 'dashboard' %}'>CodingDojo E-Commerce</a>             
+            <li id='user'><a><span class='glyphicon glyphicon-user'></span> Welcome, {{request.session.customer}}</a></li>
+        </div>
+        <ul class='nav navbar-nav navbar-right menu'>
+            <li><a href='{% url 'shoppingcart' %}'><span class='glyphicon glyphicon-shopping-cart'></span> Shopping Cart ({{request.session.shoppingcart|length}})</a></li>  
+            <li><a href='{% url 'customerlogout' %}'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>                        
+        </ul>
+    </div>
+</nav>
+
+<div class="col-md-2">
+    <div class='panel panel-default sidebar'>
+        <div class='panel-heading'>
+            <h3 class='panel-title'>Search all products</h3>
+        </div>
+        <div class='panel-body'>
+            {% csrf_token %}
+            <form action='' method=''>
+                <input class='form-group' type='search' name='custsearch'>
+                <button type='submit'><span class='glyphicon glyphicon-search'></span></button>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-default sidebar-menu">
+        <div class="panel-heading">
+            <h3 class="panel-title">Categories</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="nav nav-pills nav-stacked category-menu">
+                {% for x in categories %}
+                    <li><a href="#">{{x.cat | title}}<span class='badge pull-right'>{{x.catnum}}</span></a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class='col-md-9' id='products'>
+    <div id='prodsection'>
+    <h1 id='prodtitle'>Fruits (page 1)</h1>
+    {% for product in products %}
+        <div class='image'>
+            <a href='{% url 'oneprod' id=product.id %}'><img src={{product.image.url}} alt='{{product.name}}'></a>
+            <h4>{{product.name}}</h4>        
+            <p><span class='success'>Price: ${{product.price}}</span></p>
+        </div>
+    {% endfor %}
+    </div>
+    <center>
+        <div id='pagenumbers'>
+            <ul class="pagination">
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&raquo;</a></li>
+            </ul>
+        </div>
+    </center>
+</div>
+
+<div class='col-md-1'>
+    <form id='sortby' class="form-inline pull-right">
+        {% csrf_token %}            
+        <strong>Sort by</strong>
+        <select name="sort_by" class="form-control">
+            <option value='name'>Name</option> 
+            <option value='hilo'>Price (high to low)</option>
+            <option value='lohi'>Price (low to high)</option>                         
+        </select>
+    </form>
+</div>
+
+{% endblock %}
