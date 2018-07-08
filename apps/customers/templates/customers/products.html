@@ -37,36 +37,30 @@
         <div class="panel-body">
             <ul class="nav nav-pills nav-stacked category-menu">
                 {% for x in categories %}
-                    <li><a href="#">{{x.cat | title}}<span class='badge pull-right'>{{x.catnum}}</span></a></li>
+                    <li><a cat='{{x.cat}}' class='categories' href="#">{{x.cat | title}}<span class='badge pull-right'>{{x.catnum}}</span></a></li>
                 {% endfor %}
             </ul>
         </div>
     </div>
 </div>
 
-<div class='col-md-9' id='products'>
+<div class='col-md-9'>
     <div id='prodsection'>
-    <h1 id='prodtitle'>Fruits (page 1)</h1>
-    {% for product in products %}
-        <div class='image'>
-            <a href='{% url 'oneprod' id=product.id %}'><img src={{product.image.url}} alt='{{product.name}}'></a>
-            <h4>{{product.name}}</h4>        
-            <p><span class='success'>Price: ${{product.price}}</span></p>
+        <section class="jumbotron text-center" id="products">
+            <div class="container">
+                <h1 class="jumbotron-heading">Thank you for entering Coding Dojo E-commerce</h1>
+                <br>
+                <p class="lead text-muted">Start shopping by selecting a category or searching for any product!</p>
+            </div>
+        </section>
+        <div id='dashpics'>
+            <center>
+            {% load static %}
+            <img src="{% static "customers/coding_dojo_logo_black.png" %}" alt='dojologo'>
+            <img src="{% static "customers/download.png" %}" alt='ecommerce'>
+            </center>
         </div>
-    {% endfor %}
     </div>
-    <center>
-        <div id='pagenumbers'>
-            <ul class="pagination">
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&raquo;</a></li>
-            </ul>
-        </div>
-    </center>
 </div>
 
 <div class='col-md-1'>

@@ -1,0 +1,24 @@
+<div id="actualprods">
+
+<h1 id='prodtitle'>{{category | title}} (page 1)</h1>
+{% for product in products %}
+    <div class='image'>
+        <a href='{% url 'oneprod' id=product.id %}'><img src={{product.image.url}} alt='{{product.name}}'></a>
+        <h4>{{product.name}}</h4>        
+        <p><span class='success'>Price: ${{product.price}}</span></p>
+    </div>
+{% endfor %}
+<center>
+    <div id='pagenumbers'>
+        <ul class="pagination">
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&raquo;</a></li>
+        </ul>
+    </div>
+</center>
+
+</div>

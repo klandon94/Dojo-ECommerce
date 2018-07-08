@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from .models import Customer
 from apps.products.models import Product
@@ -61,11 +61,7 @@ def dashboard(req):
         catlist = []
         for x in list(Product.objects.values_list('category', flat=True).distinct()):
             catlist.append({"cat":x, "catnum":Product.objects.category_num(x)})
-        context = {
-            'products': Product.objects.all(),
-            'categories': catlist
-        }
-        return render(req, 'customers/products.html', context)
+        return render(req, 'customers/products.html', context = {'categories': catlist})
     req.session.clear()
     req.session['badlogin'] = True
     return redirect('mainpage')
@@ -79,7 +75,7 @@ def purchase(req, id):
             messages.error(req, 'Must enter a number', extra_tags='quantity')
         else:
             cart = req.session['shoppingcart']
-            cart.append({'item':Product.objects.get(id=id).name, 'price':float(Product.objects.get(id=id).price), 'quantity':req.POST['quantity'], 'total':int(req.POST['quantity'])*float(Product.objects.get(id=id).price)})
+            cart.append({'item':Product.objects.get(id=id).name, 'price':float(Product.objects.get(id=id).price), 'quantity':req.POST['quantity'], 'total':float("{0:.2f}".format(int(req.POST['quantity'])*float(Product.objects.get(id=id).price)))})
             req.session['shoppingcart'] = cart
             return redirect('shoppingcart')
     return redirect('oneprod', id=id)

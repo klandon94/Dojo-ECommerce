@@ -41,7 +41,19 @@
 
             // Products dashboard
             $('#products').fadeIn(1500)
+            $('#dashpics').fadeIn(2000)
             $('#user').fadeIn(2000)
+
+            $('.categories').click(function(){
+                var cat = $(this).attr('cat')
+                $.ajax({
+                    url: "{% url 'showprods' %}",
+                    data: {category: cat},
+                    success: function(resp){
+                        $('#prodsection').html(resp)
+                    }
+                })
+            })
 
         })
     </script>
@@ -63,8 +75,11 @@
         }
 
         /* Customer product dashboard page*/
-        #products, #user{
+        #products, #user, #dashpics{
             display:none;
+        }
+        #dashpics{
+            background-color:cornflowerblue;
         }
         .image{
             height:250px;
@@ -85,6 +100,9 @@
         }
         #prodtitle, .image h4, .image p{
             text-align:center;
+        }
+        #pagenumbers{
+            margin-top:45px;
         }
         #sortby{
             margin-top:30px;
