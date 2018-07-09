@@ -1,0 +1,95 @@
+/* Admin login page */
+#adminlogo, #contain{
+    background-color:goldenrod;
+}
+#adminlogin{
+    width:40%;
+    margin: 0 auto;
+    border: 5px solid black;
+    border-radius:5px;
+    padding:15px;
+    background-color:lightseagreen;
+}
+#adminlogin h2{
+    text-align:center;
+    font-weight:bold;
+    font-style:italic;
+}
+#gohome{
+    margin-left:30px;
+    margin-bottom:30px;
+}
+.error{
+    font-weight:bold;
+    font-style:italic;
+    color:darkred;
+}
+.success{
+    font-weight:bold;
+    color:darkgreen;
+    font-style:italic;
+}
+
+/* Admin order dashboard */
+#orders{
+    margin: 0 auto;
+    border-collapse:separate;
+    border-spacing: 0 20px;
+    margin-top:50px;
+    width:85%;
+    display:none;
+}
+#ordersearcher{
+    margin: 20px 0 0 20px;
+}
+
+/* Admin single order information */
+#orderinfo{
+    margin-left:20px;
+    border:5px solid black;
+    font-size:20px;
+}
+.orderid{
+    font-size:25px;
+}
+#status{
+    height:100px;
+    width:200px;
+    margin: 100px 0 0 50px;
+    border:2px solid black;
+    background-color:lightgreen;
+    padding:10px;
+}
+#priceinfo{
+    height:200px;
+    width:300px;
+    border:2px solid black;
+    margin: 50px 0 0 50px;
+    padding:20px;
+    font-size:25px;
+}
+
+/* Admin product dashboard*/
+#products{
+    margin: 0 auto;
+    margin-top:50px;
+    font-size:20px;
+    width:85%;
+}
+#productsearcher{
+    margin: 20px 0 0 20px;
+}
+#addprod{
+    margin-right:115px;
+}
+.adminimg{
+    height:100px;
+    width:100px;
+}
+#deleter, #editer, .edit{
+    display:flex;
+    justify-content:space-around;
+}
+#editcat, #newcat{
+    width:45%;
+}

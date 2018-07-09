@@ -22,9 +22,9 @@
         <div class='panel-heading'>
             <h3 class='panel-title'>Search all products</h3>
         </div>
-        <div class='panel-body'>
-            {% csrf_token %}
-            <form action='' method=''>
+        <div class='panel-body'>            
+            <form action='{% url 'searchprods' %}' method='post' id='custsearch'>
+                {% csrf_token %}
                 <input class='form-group' type='search' name='custsearch'>
                 <button type='submit'><span class='glyphicon glyphicon-search'></span></button>
             </form>
@@ -37,7 +37,7 @@
         <div class="panel-body">
             <ul class="nav nav-pills nav-stacked category-menu">
                 {% for x in categories %}
-                    <li><a cat='{{x.cat}}' class='categories' href="#">{{x.cat | title}}<span class='badge pull-right'>{{x.catnum}}</span></a></li>
+                    <li><a cat='{{x.cat}}' class='categories' href="#{{x.cat}}">{{x.cat | title}}<span class='badge pull-right'>{{x.catnum}}</span></a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -56,21 +56,37 @@
         <div id='dashpics'>
             <center>
             {% load static %}
-            <img src="{% static "customers/coding_dojo_logo_black.png" %}" alt='dojologo'>
-            <img src="{% static "customers/download.png" %}" alt='ecommerce'>
+            <img src="{% static "customers/img/coding_dojo_logo_black.png" %}" alt='dojologo'>
+            <img src="{% static "customers/img/download.png" %}" alt='ecommerce'>
             </center>
         </div>
     </div>
+    <center>
+        <div id='pagenumbers'>
+            <h2>
+            <ul class="pagination">
+                <li class="disabled"><a href="#pagenumbers" page="before" class="pages">&laquo;</a></li>
+                <li class="active"><a href="#pagenumbers" page="1" class="pages">1</a></li>
+                <li><a href="#pagenumbers" page="2" class="pages">2</a></li>
+                <li><a href="#pagenumbers" page="3" class="pages">3</a></li>
+                <li><a href="#pagenumbers" page="4" class="pages">4</a></li>
+                <li><a href="#pagenumbers" page="5" class="pages">5</a></li>
+                <li><a href="#pagenumbers" page="after" class="pages">&raquo;</a></li>
+            </ul>
+            </h2>
+        </div>
+    </center>
 </div>
 
 <div class='col-md-1'>
-    <form id='sortby' class="form-inline pull-right">
+    <form action='{% url 'sortprods' %}' method='post' id='sortby'>
         {% csrf_token %}            
         <strong>Sort by</strong>
         <select name="sort_by" class="form-control">
             <option value='name'>Name</option> 
             <option value='hilo'>Price (high to low)</option>
-            <option value='lohi'>Price (low to high)</option>                         
+            <option value='lohi'>Price (low to high)</option>
+            <input type='submit' class='btn btn-primary pull-right' value='Sort'>                         
         </select>
     </form>
 </div>

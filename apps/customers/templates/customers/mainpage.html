@@ -30,7 +30,7 @@
                 <h4 class="modal-title" id="Login">Customer login</h4>
             </div>
             <div class="modal-body">
-                <form action='{% url 'customerlogin' %}' method="post">
+                <form action='{% url 'customerlogin' %}' method="post" id="login">
                     {% csrf_token %}
                     <div class="form-group">
                         {% if messages %}
@@ -140,8 +140,8 @@
 <div id='mainpics'>
     <center>
     {% load static %}
-    <img src="{% static "customers/coding_dojo_logo_black.png" %}" alt='dojologo'>
-    <img src="{% static "customers/download.png" %}" alt='ecommerce'>
+    <img src="{% static "customers/img/coding_dojo_logo_black.png" %}" alt='dojologo'>
+    <img src="{% static "customers/img/download.png" %}" alt='ecommerce'>
     </center>
 </div>
 

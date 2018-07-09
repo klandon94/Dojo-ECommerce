@@ -1,6 +1,5 @@
-
 {% if products|length > 0 %}
-<h1 class='prodtitle'>{{category | title}} (page {{page}})</h1>
+<h1 class='prodtitle'>All products matching: <span class='glyphicon glyphicon-search'></span> {{keyword}}</h1>
 {% for product in products %}
     <div class='image'>
         <a href='{% url 'oneprod' id=product.id %}'><img src={{product.image.url}} alt='{{product.name}}'></a>
@@ -9,7 +8,7 @@
     </div>
 {% endfor %}
 {% else %}
-<h1 class='prodtitle error'>There are no more {{category | title}} on our website. Sorry for the inconvenience!</h1>
+<h1 class='prodtitle error'>There are no products that match your search "{{keyword}}"</h1>
 {% load static %}
 <img src="{% static "customers/img/sorry.jpg" %}" alt='sorry'>
 {% endif %}

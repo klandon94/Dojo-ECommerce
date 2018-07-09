@@ -1,0 +1,8 @@
+<h1 class='prodtitle'>All {{request.session.category}} sorted ({{display}})</h1>
+{% for product in products %}
+    <div class='image'>
+        <a href='{% url 'oneprod' id=product.id %}'><img src={{product.image.url}} alt='{{product.name}}'></a>
+        <h4>{{product.name}}</h4>        
+        <p><span class='success'>Price: ${{product.price}}</span></p>
+    </div>
+{% endfor %}
