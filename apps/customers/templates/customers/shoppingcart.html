@@ -24,7 +24,8 @@
             <th>Item</th>                
             <th>Price</th>                
             <th>Quantity</th>
-            <th>Total</th>            
+            <th>Total</th> 
+            <th>Action</th>           
         </tr>
     </thead>
     {% for item in request.session.shoppingcart %}
@@ -34,6 +35,7 @@
             <td>${{item.price}}</td>
             <td>{{item.quantity}}</td>
             <td>${{item.total}}</td>
+            <td><a href="shoppingcart/{{item.item}}"><span class='glyphicon glyphicon-trash'></span></a></td>
         </tr>
     </tbody>
     {% endfor %}         

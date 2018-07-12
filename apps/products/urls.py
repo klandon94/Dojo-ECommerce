@@ -6,4 +6,6 @@ urlpatterns = [
     url(r'^prodpaginate$', views.prodpaginate, name="prodpaginate"),
     url(r'^searchprods$', views.searchprods, name="searchprods"),
     url(r'^sortprods$', views.sortprods, name="sortprods"),
+    url(r'^adminprodpaginate$', views.adminprodpaginate, name="adminprodpaginate"),
+    url(r'^adminprodsearch$', views.adminprodsearch, name="adminprodsearch"),
 ]

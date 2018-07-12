@@ -67,6 +67,9 @@ def dashboard(req):
     return redirect('mainpage')
 
 def oneprod(req, id):
+    if 'addedcart' in req.session and req.session['addedcart'] == True:
+        messages.success(req, "Successfully added to cart", extra_tags="addedcart")
+        req.session['addedcart'] = False
     return render(req, 'customers/oneproduct.html', context={'prod':Product.objects.get(id=id)})
 
 def purchase(req, id):
@@ -77,7 +80,8 @@ def purchase(req, id):
             cart = req.session['shoppingcart']
             cart.append({'item':Product.objects.get(id=id).name, 'price':float(Product.objects.get(id=id).price), 'quantity':req.POST['quantity'], 'total':float("{0:.2f}".format(int(req.POST['quantity'])*float(Product.objects.get(id=id).price)))})
             req.session['shoppingcart'] = cart
-            return redirect('shoppingcart')
+            req.session['addedcart'] = True
+            return redirect('oneprod', id=id)
     return redirect('oneprod', id=id)
 
 def shoppingcart(req):
@@ -86,6 +90,14 @@ def shoppingcart(req):
         for x in req.session['shoppingcart']:
             cumulative += x['total']
     return render(req, 'customers/shoppingcart.html', context={'grandtotal':cumulative})
+
+def cartdelete(req, word):
+    cart = req.session['shoppingcart']
+    for x in cart:
+        if x['item'] == word:
+            cart.remove(x)
+    req.session['shoppingcart'] = cart
+    return redirect('shoppingcart')
 
 def custlogout(req):
     req.session.clear()

@@ -15,27 +15,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     {% load static %}
     <link rel="stylesheet" href="{% static 'admins/css/admin.css' %}">
-    <script>
-        $(document).ready(function(){
-            // Admin login page
-            $('.adlogout').fadeOut(2000)
-
-            // Admin orders dashboard page
-            $('#orders').fadeIn(800)
-
-            // Admin products dashboard page
-            $('#edit-modal').on('show.bs.modal', function(event){
-                var link = $(event.relatedTarget)
-                var prod = link.data('blah')
-                $(this).find('.modal-title').text('Edit Product - ID ' + prod)
-            })
-            $('#delete-modal').on('show.bs.modal', function(event){
-                var link = $(event.relatedTarget)
-                var prod = link.data('blah2')
-                $(this).find('.modal-title').text('Are you sure you want to delete product ' + prod + '?')
-            })
-        })
-    </script>
+    <script src="{% static 'admins/js/admin.js' %}"></script>
 </head>
 <body>
     {% block adminlogin %}

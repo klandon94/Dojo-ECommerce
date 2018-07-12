@@ -51,14 +51,20 @@
                 </form>
             </div>
         </div>
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.extra_tags == 'addedcart' %}
+                    <p class="{{message.tags}}">{{message}}</p>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     </div>
-
 </div>
 <div class='row' id='similar'>
     <h2>Customers also bought:</h2>
     <div class='col-md-2'>
         {% load static %}
-        <img class='productimg' src="{% static "customers/apple.jpg" %}">
+        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
         <span class='simdesc'>
             <p><b>Apple</b></p>
             <p>$20</p>
@@ -66,7 +72,7 @@
     </div>
     <div class='col-md-2'>
         {% load static %}
-        <img class='productimg' src="{% static "customers/apple.jpg" %}">
+        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
         <span class='simdesc'>
             <p><b>Apple</b></p>
             <p>$20</p>
@@ -74,7 +80,7 @@
     </div>
     <div class='col-md-2'>
         {% load static %}
-        <img class='productimg' src="{% static "customers/apple.jpg" %}">
+        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
         <span class='simdesc'>
             <p><b>Apple</b></p>
             <p>$20</p>
@@ -82,7 +88,7 @@
     </div>
     <div class='col-md-2'>
         {% load static %}
-        <img class='productimg' src="{% static "customers/apple.jpg" %}">
+        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
         <span class='simdesc'>
             <p><b>Apple</b></p>
             <p>$20</p>
@@ -90,7 +96,7 @@
     </div>
     <div class='col-md-2'>
         {% load static %}
-        <img class='productimg' src="{% static "customers/apple.jpg" %}">
+        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
         <span class='simdesc'>
             <p><b>Apple</b></p>
             <p>$20</p>

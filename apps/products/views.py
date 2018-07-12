@@ -41,3 +41,23 @@ def sortprods(req):
         display = 'from least to most $$$'
     prods = Product.objects.order_by(orderby).filter(category=req.session['category'])
     return render(req, "products/sortedproducts.html", {'products':prods, 'display':display})
+
+def adminprodpaginate(req):
+    number = req.GET['number']
+    if int(number) == 1:
+        after = 5
+        before = 0
+    else:
+        before = 5 * (int(number)-1)
+        after = 5 * int(number)
+    products = Product.objects.all()[before:after]
+    context = {
+        'page': number,
+        'allproducts': products,
+    }
+    return render(req, "admins/partialprods.html", context)
+
+def adminprodsearch(req):
+    keyword = req.POST['adminsearchp']
+    prods = Product.objects.filter(name__startswith=keyword)
+    return render(req, "admins/partialprods.html", {'allproducts': prods})

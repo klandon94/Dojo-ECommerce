@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^ecommerce/product/(?P<id>\d+)$', views.oneprod, name='oneprod'),
     url(r'^ecommerce/product/buy/(?P<id>\d+)$', views.purchase, name='purchase'),
     url(r'^ecommerce/shoppingcart$', views.shoppingcart, name='shoppingcart'),
+    url(r'^ecommerce/shoppingcart/(?P<word>.+)$', views.cartdelete, name='cartdelete'),
 ]

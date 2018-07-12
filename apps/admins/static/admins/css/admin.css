@@ -76,8 +76,8 @@
     font-size:20px;
     width:85%;
 }
-#productsearcher{
-    margin: 20px 0 0 20px;
+#orderproduct, #productsearcher{
+    margin:20px 0 0 20px;
 }
 #addprod{
     margin-right:115px;

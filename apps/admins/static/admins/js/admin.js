@@ -1,34 +1,21 @@
 $(document).ready(function(){
-    // CodingDojo Ecommerce main page
-    $('#mainpics').fadeIn(2000)
-    $('.logout').fadeOut(2000)
 
-    // figure out how to keep modal open if error messages show up (since page keeps redirecting to main)
-    /* $('#login').submit(function(e){
-        e.preventDefault()
-        var str = $('#login').serialize()
-        if (str){
-            $('.error').show()
-            console.log("no data")
-        }
-    }) */
+    // Admin login page
+    $('.adlogout').fadeOut(2000)
 
-    // Products dashboard
-    $('#products').fadeIn(1500)
-    $('#dashpics').fadeIn(2000)
-    $('#user').fadeIn(2000)
-    $('#pagenumbers').hide()
+    // Admin orders dashboard page
+    $('#orders').fadeIn(800)
 
-    $('.categories').click(function(){
-        var cat = $(this).attr('cat')
-        $('#pagenumbers').show()
-        $.ajax({
-            url: "/product/showprods",
-            data: {category: cat},
-            success: function(resp){
-                $('#prodsection').html(resp)
-            }
-        })
+    // Admin products dashboard page
+    $('#edit-modal').on('show.bs.modal', function(event){
+        var link = $(event.relatedTarget)
+        var prod = link.data('blah')
+        $(this).find('.modal-title').text('Edit Product - ID ' + prod)
+    })
+    $('#delete-modal').on('show.bs.modal', function(event){
+        var link = $(event.relatedTarget)
+        var prod = link.data('blah2')
+        $(this).find('.modal-title').text('Are you sure you want to delete product ' + prod + '?')
     })
 
     $('.pages').click(function(){
@@ -41,7 +28,7 @@ $(document).ready(function(){
             var x = (parseInt(aft) + 1).toString()
             $(this).parent().siblings('.active').removeClass("active")
             $("a[page='"+x+"']").parent().addClass("active")
-            if (x == "5") $("a[page='after']").parent().addClass("disabled")
+            if (x == "8") $("a[page='after']").parent().addClass("disabled")
         }
         if (page == "before" && !$("a[page='before']").parent().hasClass("disabled")){
             $("a[page='after']").parent().removeClass("disabled")
@@ -56,50 +43,34 @@ $(document).ready(function(){
             num = page
             $(this).parent().siblings('.active').removeClass("active")
             $(this).parent().addClass("active")
-            if ($("a[page='5']").parent().hasClass('active')) $("a[page='after']").parent().addClass("disabled")
+            if ($("a[page='8']").parent().hasClass('active')) $("a[page='after']").parent().addClass("disabled")
             else $("a[page='after']").parent().removeClass("disabled")
             if ($("a[page='1']").parent().hasClass('active')) $("a[page='before']").parent().addClass("disabled")
             else $("a[page='before']").parent().removeClass("disabled")
         }
 
         $.ajax({
-            url: "/product/prodpaginate",
+            url: "/product/adminprodpaginate",
             data: {number: num},
             success: function(resp){
-                $('#prodsection').html(resp)
+                $('#adminprods').html(resp)
             }
         })
     })
 
-    $('#custsearch').keyup(function(){
+    $('#adminsearchp').keyup(function(){
         $(this).submit(function(e){
             e.preventDefault()
         })
         $('#pagenumbers').hide()
         $.ajax({
             method: "POST",
-            url: $(this).attr('action'),
+            url: "/product/adminprodsearch",
             data: $(this).serialize(),
             success: function(resp){
-                $('#prodsection').html(resp)
+                $('#adminprods').html(resp)
             }
         })
     })
-
-    $('#sortby').submit(function(e){
-        e.preventDefault()
-        $('#pagenumbers').hide()
-        $.ajax({
-            method: "POST",
-            url: $(this).attr('action'),
-            data: $(this).serialize(),
-            success: function(resp){
-                $('#prodsection').html(resp)
-            }
-        })
-    })
-
-    // One product
-    $(".addedcart").fadeOut(1500);
 
 })

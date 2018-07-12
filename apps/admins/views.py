@@ -47,7 +47,7 @@ def adminorders(req):
 
 def adminproducts(req):
     if 'adloggedin' in req.session and req.session['adloggedin'] == True:
-        return render(req, 'admins/adminproducts.html', context={'allproducts':Product.objects.all()})
+        return render(req, 'admins/adminproducts.html', context={'allproducts':Product.objects.all()[0:5], 'cats':list(Product.objects.values_list('category', flat=True).distinct())})
     req.session.clear()
     req.session['adbadlogin'] = True
     return redirect('adminmain')
