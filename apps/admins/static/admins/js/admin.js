@@ -12,11 +12,6 @@ $(document).ready(function(){
         var prod = link.data('blah')
         $(this).find('.modal-title').text('Edit Product - ID ' + prod)
     })
-    $('#delete-modal').on('show.bs.modal', function(event){
-        var link = $(event.relatedTarget)
-        var prod = link.data('blah2')
-        $(this).find('.modal-title').text('Are you sure you want to delete product ' + prod + '?')
-    })
 
     $('.pages').click(function(){
         var page = $(this).attr("page")
@@ -60,7 +55,7 @@ $(document).ready(function(){
 
     $('#adminsearchp').keyup(function(){
         $(this).submit(function(e){
-            e.preventDefault()
+            return false
         })
         $('#pagenumbers').hide()
         $.ajax({
@@ -72,5 +67,21 @@ $(document).ready(function(){
             }
         })
     })
+
+    $('#adminorderp').submit(function(e){
+        e.preventDefault()
+        $('#pagenumbers').hide()
+        $.ajax({
+            method: "POST",
+            url: "/product/adminprodorder",
+            data: $(this).serialize(),
+            success: function(resp){
+                $('#adminprods').html(resp)
+            }
+        })
+    })
+
+    $("#admindelete").fadeOut(1500)
+    $("#adminadd").fadeOut(1500)
 
 })

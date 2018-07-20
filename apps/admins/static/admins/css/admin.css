@@ -76,7 +76,7 @@
     font-size:20px;
     width:85%;
 }
-#orderproduct, #productsearcher{
+#adminorderp, #productsearcher{
     margin:20px 0 0 20px;
 }
 #addprod{
@@ -92,4 +92,40 @@
 }
 #editcat, #newcat{
     width:45%;
+}
+
+/* Admin single product page */
+.productimg{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.5s;
+    width:100%;
+}
+img:hover{
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+.proddesc{
+    font-size:25px;
+    font-family:'Times New Roman', Times, serif;
+    font-style:italic;            
+}
+#prod{
+    margin-left:30px;
+}
+#desc{
+    height:450px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+    margin-top: 15px;
+}
+#similar{
+    margin: 30px 0 75px 0;
+}
+#similar h2{
+    margin-left:30px;
+}
+.simdesc{
+    display:flex;
+    justify-content:space-around;
+    font-size:18px;
 }

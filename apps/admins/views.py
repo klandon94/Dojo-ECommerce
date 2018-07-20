@@ -47,7 +47,45 @@ def adminorders(req):
 
 def adminproducts(req):
     if 'adloggedin' in req.session and req.session['adloggedin'] == True:
+        if 'admindelete' in req.session and req.session['admindelete'] == True:
+            messages.success(req, "Successfully deleted product", extra_tags="admindelete")
+            req.session['admindelete'] = False
+        if 'adminadd' in req.session and req.session['adminadd'] == True:
+            messages.success(req, "Successfully added a new product", extra_tags="adminadd")
+            req.session['adminadd'] = False
         return render(req, 'admins/adminproducts.html', context={'allproducts':Product.objects.all()[0:5], 'cats':list(Product.objects.values_list('category', flat=True).distinct())})
+    req.session.clear()
+    req.session['adbadlogin'] = True
+    return redirect('adminmain')
+
+def adminprod(req, id):
+    if 'adloggedin' in req.session and req.session['adloggedin'] == True:
+        return render(req, 'admins/adminproduct.html', context={'prod':Product.objects.get(id=id)})
+    req.session.clear()
+    req.session['adbadlogin'] = True
+    return redirect('adminmain')
+
+def addprod(req):
+    if req.POST['addnewcat']:
+        category = req.POST['addnewcat']
+    else:
+        category = req.POST['addcat']
+    handle_uploaded_file(req.FILES['newimg'], str(req.FILES['newimg']))
+    Product.objects.create(name=req.POST['addname'], category=category, price=float(req.POST['addprice']), desc=req.POST['adddesc'], image=str(req.FILES['newimg']))
+    req.session['adminadd'] = True
+    return redirect('adminproducts')
+
+def handle_uploaded_file(file, filename):
+    with open('media/' + filename, 'wb+') as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)
+
+def deleteprod(req, id):
+    if 'adloggedin' in req.session and req.session['adloggedin'] == True:
+        deleteprod = Product.objects.get(id=id)
+        deleteprod.delete()
+        req.session['admindelete'] = True
+        return redirect('adminproducts')
     req.session.clear()
     req.session['adbadlogin'] = True
     return redirect('adminmain')

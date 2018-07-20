@@ -73,7 +73,7 @@ $(document).ready(function(){
 
     $('#custsearch').keyup(function(){
         $(this).submit(function(e){
-            e.preventDefault()
+            return false
         })
         $('#pagenumbers').hide()
         $.ajax({

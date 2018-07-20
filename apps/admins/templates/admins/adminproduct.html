@@ -1,0 +1,77 @@
+{% extends 'admins/adminindex.html' %}
+
+{% block title %} Admin Product {% endblock %}
+
+{% block adminprod %}
+
+<nav class='navbar navbar-dark' style='background-color:red;'>
+    <div class='container-fluid'>
+        <div class='nav navbar-nav navbar-header'>
+            <a class='navbar-brand active' href='#'>Admin Dashboard</a>             
+            <li><a href='{% url 'adminorders' %}'><span class='glyphicon glyphicon-barcode'></span> Orders</a></li>
+            <li><a href='{% url 'adminproducts' %}'><span class='glyphicon glyphicon-tag'></span> Products</a></li>
+        </div>
+        <ul class='nav navbar-nav navbar-right'>                
+            <li><a href='{% url 'adminlogout' %}'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>                        
+        </ul>
+    </div>
+</nav>
+
+<div class='row'>
+    <div class="col-md-3" id='prod'>
+        <h2>{{prod.name}}</h2>
+        <img class='productimg' src={{prod.image.url}} style='height:370px;'>
+    </div>
+
+    <div class='col-md-4' id='desc'>
+        <br><br>
+        <p class='proddesc'>{{prod.desc}}</p>
+        <p class='proddesc'><b>Price</b>: ${{prod.price}}</p>
+    </div>
+</div>
+    
+<div class='row' id='similar'>
+    <h2>Customers also bought:</h2>
+    <div class='col-md-2'>
+        {% load static %}
+        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
+        <span class='simdesc'>
+            <p><b>Apple</b></p>
+            <p>$20</p>
+        </span>
+    </div>
+    <div class='col-md-2'>
+        {% load static %}
+        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
+        <span class='simdesc'>
+            <p><b>Apple</b></p>
+            <p>$20</p>
+        </span>
+    </div>
+    <div class='col-md-2'>
+        {% load static %}
+        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
+        <span class='simdesc'>
+            <p><b>Apple</b></p>
+            <p>$20</p>
+        </span>
+    </div>
+    <div class='col-md-2'>
+        {% load static %}
+        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
+        <span class='simdesc'>
+            <p><b>Apple</b></p>
+            <p>$20</p>
+        </span>
+    </div>
+    <div class='col-md-2'>
+        {% load static %}
+        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
+        <span class='simdesc'>
+            <p><b>Apple</b></p>
+            <p>$20</p>
+        </span>
+    </div>
+</div>
+
+{% endblock %}

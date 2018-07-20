@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^sortprods$', views.sortprods, name="sortprods"),
     url(r'^adminprodpaginate$', views.adminprodpaginate, name="adminprodpaginate"),
     url(r'^adminprodsearch$', views.adminprodsearch, name="adminprodsearch"),
+    url(r'^adminprodorder$', views.adminprodorder, name="adminprodorder"),
 ]

@@ -17,13 +17,13 @@
     </div>
 </nav>
 
-<form action='#' method='post' class='form-inline' id='orderproduct'>
+<form action='{% url 'adminprodorder' %}' method='post' class='form-inline' id='adminorderp'>
     {% csrf_token %}
     <label for='orderby'>Order by:</label>
     <select name="orderby" class="form-group" id='orderby'>
-        <option>Product ID</option>
-        <option>Product Name</option>                   
-        <option>Category</option>              
+        <option value="id">Product ID</option>
+        <option value="name">Product Name</option>                   
+        <option value="category">Category</option>              
     </select>
     <button type='submit'><span class='glyphicon glyphicon-sort'></span></button>
 </form>
@@ -36,6 +36,14 @@
 </div>
 
 <a id='addprod' href='#' data-toggle='modal' data-target='#add-modal' class='btn btn-success pull-right'>Add new product</a>
+
+{% if messages %}
+    {% for message in messages %}
+        {% if message.extra_tags == 'admindelete' or message.extra_tags == 'adminadd' %}
+            <p class="{{message.tags}}">{{message}}</p>
+        {% endif %}
+    {% endfor %}
+{% endif %}
 
 <div id="adminprods">
 <table id='products' class='table table-bordered table-striped table-hover'>
@@ -60,12 +68,12 @@
     <tbody>
         <tr>                    
             <td><img class='adminimg' src={{product.image.url}} alt='{{product.name}}'></td>
-            <td><a href='{% url 'oneprod' id=product.id %}'><b>{{product.id}}</b></a></td>
+            <td><a href='{% url 'adminprod' id=product.id %}'><b>{{product.id}}</b></a></td>
             <td>{{product.name}}</td>
             <td>{{product.category | title}}</td>
             <td>{{product.inventory}}</td>
             <td>{{product.quantity_sold}}</td>
-            <td class='edit'><a href="#" data-toggle="modal" data-target="#edit-modal" data-blah='{{product.id}}'> Edit</a> <a href="#" data-toggle='modal' data-target='#delete-modal' data-blah2='{{product.id}}'>Delete</a></td>
+            <td class='edit'><a href="#" data-toggle="modal" data-target="#edit-modal" data-blah='{{product.id}}'> Edit</a> <a href="/admin/delete/{{product.id}}">Delete</a></td>
         </tr>
     </tbody>    
     {% endfor %}                       
@@ -129,63 +137,42 @@
                 <h4 class="modal-title" id="Login">Add new product</h4>
             </div>
             <div class="modal-body">
-                <form action="#" method="post" enctype="multipart/form-data">
+                <form action="{% url "addprod" %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
                     <div class="form-group">
-                        <label for='editname'>Name</label>
-                        <input type="text" name='editname' class="form-control" id="editname" placeholder="name">
+                        <label for='addname'>Name</label>
+                        <input type="text" name='addname' class="form-control" id="addname" placeholder="name">
                     </div>
                     <div class="form-group">
-                        <label for='editdesc'>Description</label>
-                        <textarea name='editdesc' id='editdesc' class='form-control' rows='3' placeholder='description'></textarea>
+                        <label for='adddesc'>Description</label>
+                        <textarea name='adddesc' id='adddesc' class='form-control' rows='3' placeholder='description'></textarea>
                     </div>
                     <div class="form-group">
-                        <label for='editcat'>Category</label>
-                        <select name='editcat' id='editcat' class='form-control' rows='3'>
-                            <option value='fruits'>Fruits</option>
-                            <option value='animals'>Animals</option>
-                            <option value='vidgames'>Video Games</option>
-                            <option value='books'>Books</option>
-                            <option value='jerseys'>Jerseys</option>
-                            <option value='misc'>Miscellaneous</option>
+                        <label for='addcat'>Category</label>
+                        <select name='addcat' id='addcat' class='form-control' rows='3'>
+                            {% for cat in cats %}
+                            <option value='{{cat}}'>{{cat|title}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for='newcat'>Or add a new category</label>
-                        <input type='text' name='newcat' id='newcat' placeholder='new category' class='form-control'>
+                        <label for='addnewcat'>Or add a new category</label>
+                        <input type='text' name='addnewcat' id='addnewcat' placeholder='new category' class='form-control'>
+                    </div>
+                    <div class="form-group">
+                        <label for="addprice">Price</label>
+                        <input type="text" name="addprice" id="addprice" class="form-control" rows="3">
                     </div>
                     <div class="form-group">
                         <label for='newimg'>Upload image</label>
                         <input type="file" name='newimg' id="newimg">
-                    </div>
-                </form>
+                    </div>            
             </div>
             <div class='modal-footer'>
                 <div id='editer'>
                     <button class='btn btn-info form-inline' data-dismiss='modal'>Cancel</button>
-                    <form action='#' method='post'>
-                        <button class='btn btn-success' type='submit'>Preview</button>
-                    </form>
-                    <form action='#' method='post'>
-                        <button class='btn btn-primary' type='submit'>Add</button>   
-                    </form>                                                 
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="Delete" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="Delete">Are you sure you want to delete product __?</h4>
-            </div>
-            <div class="modal-footer">
-                <div id='deleter'>
-                    <button class='btn btn-info form-inline' data-dismiss='modal'>Cancel</button>
-                    <form action="#" method="post">
-                        <button class="btn btn-danger" type='submit'>Delete</button>
-                    </form>
+                    <button class='btn btn-primary' type='submit'>Add</button>    
+                </form>               
                 </div>
             </div>
         </div>

@@ -61,3 +61,8 @@ def adminprodsearch(req):
     keyword = req.POST['adminsearchp']
     prods = Product.objects.filter(name__startswith=keyword)
     return render(req, "admins/partialprods.html", {'allproducts': prods})
+
+def adminprodorder(req):
+    sorted = req.POST['orderby']
+    prods = Product.objects.order_by(sorted)
+    return render(req, "admins/partialprods.html", {'allproducts':prods})
