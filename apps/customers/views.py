@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from .models import Customer
-from apps.products.models import Product
+from apps.products.models import Product, Order, OrderItem
 import bcrypt
 
 def index(req):
@@ -58,6 +58,9 @@ def custlogin(req):
 
 def dashboard(req):
     if 'logged_in' in req.session and req.session['logged_in'] == True:
+        if 'placedorder' in req.session and req.session['placedorder'] == True:
+            messages.success(req, "Successfully placed an order", extra_tags="placedorder")
+            req.session['placedorder'] = False
         catlist = []
         for x in list(Product.objects.values_list('category', flat=True).distinct()):
             catlist.append({"cat":x, "catnum":Product.objects.category_num(x)})
@@ -78,7 +81,7 @@ def purchase(req, id):
             messages.error(req, 'Must enter a number', extra_tags='quantity')
         else:
             cart = req.session['shoppingcart']
-            cart.append({'item':Product.objects.get(id=id).name, 'price':float(Product.objects.get(id=id).price), 'quantity':req.POST['quantity'], 'total':float("{0:.2f}".format(int(req.POST['quantity'])*float(Product.objects.get(id=id).price)))})
+            cart.append({'item':Product.objects.get(id=id).name, 'price':float(Product.objects.get(id=id).price), 'quantity':req.POST['quantity'], 'total': round(float(int(req.POST['quantity'])*float(Product.objects.get(id=id).price)),2)})
             req.session['shoppingcart'] = cart
             req.session['addedcart'] = True
             return redirect('oneprod', id=id)
@@ -89,6 +92,7 @@ def shoppingcart(req):
     if len(req.session['shoppingcart']):
         for x in req.session['shoppingcart']:
             cumulative += x['total']
+    cumulative = round(cumulative,2)
     return render(req, 'customers/shoppingcart.html', context={'grandtotal':cumulative})
 
 def cartdelete(req, word):
@@ -99,6 +103,46 @@ def cartdelete(req, word):
     req.session['shoppingcart'] = cart
     return redirect('shoppingcart')
 
+def placeorder(req):
+    req.session['Sfname'] = req.POST['Sfname']
+    req.session['Slname'] = req.POST['Slname']
+    req.session['Saddress'] = req.POST['Saddress']
+    req.session['Scity'] = req.POST['Scity']
+    req.session['Sstate'] = req.POST['Sstate']
+    req.session['Szip'] = req.POST['Szip']
+
+    req.session['Bfname'] = req.POST['Bfname']
+    req.session['Blname'] = req.POST['Blname']
+    req.session['Baddress'] = req.POST['Baddress']
+    req.session['Bcity'] = req.POST['Bcity']
+    req.session['Bstate'] = req.POST['Bstate']
+    req.session['Bzip'] = req.POST['Bzip']
+
+    if req.method == 'POST':
+        errors = Order.objects.order_validator(req.POST)
+        if len(errors):
+            for key,value in errors.items():
+                messages.error(req, value, key)
+            return redirect('shoppingcart')
+        else:
+            user = Customer.objects.get(id=req.session['id'])
+            cart = req.session['shoppingcart']
+            items = []
+            for x in cart:
+                prod = Product.objects.get(name=x['item'])
+                amt = int(x['quantity'])
+                prod.inventory -= amt
+                prod.quantity_sold += amt
+                prod.save()
+                items.append(OrderItem.objects.create(item=prod, amount=amt))
+            neworder = Order.objects.create(placer=user, Sfname=req.POST['Sfname'], Slname=req.POST['Slname'], Saddress=req.POST['Saddress'], Scity=req.POST['Scity'], Sstate=req.POST['Sstate'], Szip=req.POST['Szip'], Bfname=req.POST['Bfname'], Blname=req.POST['Blname'], Baddress=req.POST['Baddress'], Bcity=req.POST['Bcity'], Bstate=req.POST['Bstate'], Bzip=req.POST['Bzip'])
+            for x in items:
+                neworder.goods.add(x)
+            neworder.save()
+            req.session['placedorder'] = True
+            req.session['shoppingcart'] = []
+            return redirect('dashboard')
+            
 def custlogout(req):
     req.session.clear()
     req.session['justloggedout'] = True

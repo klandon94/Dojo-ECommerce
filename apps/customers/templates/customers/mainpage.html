@@ -65,58 +65,23 @@
             <div class="modal-body">
                 <form action="{% url 'register' %}" method="post" id='registrar'>
                     {% csrf_token %}
-                    <div class="form-group">
-                        {% if messages %}
-                            {% for message in messages %}
-                                {% if message.extra_tags == 'first_name' %}
-                                    <p class="{{message.tags}}">{{message}}</p>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
+                    <div class="form-group">                        
                         <label for='first'>First Name</label>
-                        <input type="text" class="form-control" name='first_name' id="first" placeholder="first name" value='{{request.session.first_name}}'>
+                        <input type="text" class="form-control" name='first_name' id="first" placeholder="first name">
                     </div>
-                    <div class="form-group">
-                        {% if messages %}
-                            {% for message in messages %}
-                                {% if message.extra_tags == 'last_name' %}
-                                    <p class="{{message.tags}}">{{message}}</p>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
+                    <div class="form-group">  
                         <label for='last'>Last Name</label>
-                        <input type="text" class="form-control" name='last_name' id="last" placeholder="last name" value='{{request.session.last_name}}'>
+                        <input type="text" class="form-control" name='last_name' id="last" placeholder="last name">
                     </div>
                     <div class="form-group">
-                        {% if messages %}
-                            {% for message in messages %}
-                                {% if message.extra_tags == 'reg_email' %}
-                                    <p class="{{message.tags}}">{{message}}</p>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
                         <label for='email'>Email</label>
-                        <input type="text" class="form-control" name='reg_email' id="email" placeholder="email" value='{{request.session.reg_email}}'>
+                        <input type="text" class="form-control" name='reg_email' id="email" placeholder="email">
                     </div>
                     <div class="form-group">
-                        {% if messages %}
-                            {% for message in messages %}
-                                {% if message.extra_tags == 'reg_password' %}
-                                    <p class="{{message.tags}}">{{message}}</p>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
                         <label for='password'>Password</label>
                         <input type="password" class="form-control" name='reg_password' id="password" placeholder="password">
                     </div>
                     <div class="form-group">
-                        {% if messages %}
-                            {% for message in messages %}
-                                {% if message.extra_tags == 'reg_confirm' %}
-                                    <p class="{{message.tags}}">{{message}}</p>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
                         <label for='confirm'>Confirm password</label>
                         <input type="password" class="form-control" name='reg_confirm' id="confirm" placeholder="confirm password">
                     </div>

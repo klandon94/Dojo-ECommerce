@@ -17,6 +17,13 @@
     </div>
 </nav>
 
+{% if messages %} {% for message in messages %}
+    {% if message.extra_tags == 'placedorder' %}
+        <p class="{{message.tags}}" style="font-size:20px;">{{message}}</p>
+    {% endif %}
+    {% endfor %}
+{% endif %}  
+
 <div class="col-md-2">
     <div class='panel panel-default sidebar'>
         <div class='panel-heading'>

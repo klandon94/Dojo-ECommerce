@@ -25,7 +25,7 @@
             <td>{{product.category | title}}</td>
             <td>{{product.inventory}}</td>
             <td>{{product.quantity_sold}}</td>
-            <td class='edit'><a href="#" data-toggle="modal" data-target="#edit-modal" data-blah='{{product.id}}'> Edit</a> <a href='/admin/delete/{{product.id}}'>Delete</a></td>
+            <td class='edit'><a href="#" data-toggle="modal" data-target="#edit-modal" data-blah='{{product.id}}'> Edit</a> <a href="#" data-toggle='modal' data-target='#delete-modal' data-blah2='{{product.id}}'>Delete</a></td>
         </tr>
     </tbody>    
     {% endfor %}                       

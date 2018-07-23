@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from apps.customers.models import Customer
-from apps.products.models import Product
+from apps.products.models import Product, Order, OrderItem
 import bcrypt
 
 def adminmain(req):
     if 'adloggedin' not in req.session:
         req.session['logged_in'] = False
     if 'adloggedout' in req.session and req.session['adloggedout'] == True:
-        messages.success(req, "You've been successfully logged out, Mr. Admin", extra_tags='adlogout')
+        messages.success(req, "You've been successfully logged out, Mr. Landon", extra_tags='adlogout')
         req.session['adloggedout'] = False
     if 'adbadlogin' in req.session and req.session['adbadlogin'] == True:
         messages.error(req, "You must be logged in to enter this webpage", extra_tags='adlogout')
@@ -38,9 +38,18 @@ def adminlogin(req):
 
 def adminorders(req):
     if 'adloggedin' in req.session and req.session['adloggedin'] == True:
-    # Product stuff
-    # context ...
-        return render(req, 'admins/adminorders.html')
+        return render(req, 'admins/adminorders.html', context={'allorders':Order.objects.all()[0:5]})
+    req.session.clear()
+    req.session['adbadlogin'] = True
+    return redirect('adminmain')
+
+def adminord(req, id):
+    if 'adloggedin' in req.session and req.session['adloggedin'] == True:
+        order = Order.objects.get(id=id)
+        items = []
+        for x in order.goods.all():
+            items.append({"id":x.item.id, "prod":x.item, "price":x.item.price, "quantity":x.amount, "total":round(float(x.amount*x.item.price),2)})
+        return render(req, 'admins/adminorder.html', context={'order':order, "items":items})
     req.session.clear()
     req.session['adbadlogin'] = True
     return redirect('adminmain')

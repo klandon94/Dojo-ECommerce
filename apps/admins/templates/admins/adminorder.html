@@ -1,6 +1,6 @@
 {% extends 'admins/adminindex.html' %}
 
-{% block title %} Order # {% endblock %}
+{% block title %} Order #{{order.id}} {% endblock %}
 
 {% block order %}
 
@@ -18,21 +18,21 @@
 </nav>
 
 <div class='col-md-3' id='orderinfo'>
-    <p class='orderid'>Order ID: #1</p>
+    <p class='orderid'>Order ID: #{{order.id}}</p>
     <br>
     <b>Customer shipping info</b>:
-    <p>Name: Kenny</p>
-    <p>Address: 1234 Dojo Way </p>
-    <p>City: McLean</p>
-    <p>State: VA</p>
-    <p>Zip: 22102</p>
+    <p>Name: {{order.Sfname}} {{order.placer.Slname}}</p>
+    <p>Address: {{order.Saddress}} </p>
+    <p>City: {{order.Scity}}</p>
+    <p>State: {{order.Sstate}}</p>
+    <p>Zip: {{order.Szip}}</p>
     <br>
     <b>Customer billing info</b>:
-    <p>Name: Kenny</p>
-    <p>Address: 1234 Dojo Way </p>
-    <p>City: McLean</p>
-    <p>State: VA</p>
-    <p>Zip: 22102</p>
+    <p>Name: {{order.Bfname}} {{order.Blname}}</p>
+    <p>Address: {{order.Baddress}} </p>
+    <p>City: {{order.Bcity}}</p>
+    <p>State: {{order.Bstate}}</p>
+    <p>Zip: {{order.Bzip}}</p>
 </div>
 
 <div class='col-md-8'>
@@ -46,41 +46,25 @@
                 <th>Total</th>            
             </tr>
         </thead>
+        {% for item in items %}
         <tbody>
             <tr>
-                <td>2</td>                
-                <td>Apple</td>
-                <td>$80</td>
-                <td>3</td>
-                <td>$240</td>
+                <td>{{item.id}}</td>                
+                <td>{{item.prod.name}}</td>
+                <td>${{item.price}}</td>
+                <td>{{item.quantity}}</td>
+                <td>${{item.total}}</td>
             </tr>
-        </tbody>
-        <tbody>
-            <tr>
-                <td>5</td>
-                <td>Monkey</td>
-                <td>$200</td>
-                <td>5</td>
-                <td>$1000</td>
-            </tr>
-        </tbody>           
-        <tbody>
-            <tr>
-                <td>10</td>
-                <td>Lord of the Rings</td>
-                <td>$150</td>
-                <td>2</td>
-                <td>$300</td>
-            </tr>
-        </tbody>           
+        </tbody>   
+        {% endfor %}       
     </table>
 
     <div id='status'>
-        <h2>SHIPPED</h2>
+        <h2>{{order.status}}</h2>
     </div>
 
     <div id='priceinfo'>
-        <p>Subtotal: $1540</p>
+        <p>Subtotal: ${{order.total}}</p>
         <p>Shipping: $5</p>
         <p>Total Price: $1545</p>
     </div>

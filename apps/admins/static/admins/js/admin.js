@@ -13,6 +13,13 @@ $(document).ready(function(){
         $(this).find('.modal-title').text('Edit Product - ID ' + prod)
     })
 
+    $('#delete-modal').on('show.bs.modal', function(event){
+        var link = $(event.relatedTarget)
+        var prod = link.data('blah2')
+        $(this).find('.modal-title').text('Are you sure you want to delete product ' + prod +"?")
+        $(this).find('#deleteprod').attr('action', '/admin/delete/' + prod)
+    })
+
     $('.pages').click(function(){
         var page = $(this).attr("page")
         $('#pagenumbers').show()
@@ -53,10 +60,11 @@ $(document).ready(function(){
         })
     })
 
+    $('#adminsearchp').on('submit', function(e){
+        e.preventDefault()
+    })
+
     $('#adminsearchp').keyup(function(){
-        $(this).submit(function(e){
-            return false
-        })
         $('#pagenumbers').hide()
         $.ajax({
             method: "POST",
@@ -81,7 +89,7 @@ $(document).ready(function(){
         })
     })
 
-    $("#admindelete").fadeOut(1500)
-    $("#adminadd").fadeOut(1500)
+    $(".admindelete").fadeOut(1500)
+    $(".adminadd").fadeOut(1500)
 
 })
