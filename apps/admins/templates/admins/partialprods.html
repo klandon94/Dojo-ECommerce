@@ -5,12 +5,14 @@
     <col width='150'>
     <col width='120'>
     <col width='120'>
+    <col width='120'>
     <thead>
         <tr>
             <th>Picture</th>                
             <th>ID</th>                
             <th>Name</th>
             <th>Category</th>
+            <th>Price</th>
             <th>Inventory Count</th>
             <th>Quantity Sold</th>            
             <th>Action</th>            
@@ -23,6 +25,7 @@
             <td><a href='{% url 'adminprod' id=product.id %}'><b>{{product.id}}</b></a></td>
             <td>{{product.name}}</td>
             <td>{{product.category | title}}</td>
+            <td>${{product.price}}</td>
             <td>{{product.inventory}}</td>
             <td>{{product.quantity_sold}}</td>
             <td class='edit'><a href="#" data-toggle="modal" data-target="#edit-modal" data-blah='{{product.id}}'> Edit</a> <a href="#" data-toggle='modal' data-target='#delete-modal' data-blah2='{{product.id}}'>Delete</a></td>

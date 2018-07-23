@@ -4,13 +4,54 @@ $(document).ready(function(){
     $('.adlogout').fadeOut(2000)
 
     // Admin orders dashboard page
-    $('#orders').fadeIn(800)
+    $('#adminsearcho').on('submit', function(e){
+        e.preventDefault()
+    })
+
+    $('#adminsearcho').keyup(function(){
+        $('.pagenumbers').hide()
+        $.ajax({
+            method: "POST",
+            url: "/product/adminordsearch",
+            data: $(this).serialize(),
+            success: function(resp){
+                $('#partialords').html(resp)
+            }
+        })
+    })
+
+    $('#adminordero').submit(function(e){
+        e.preventDefault()
+        $('.pagenumbers').hide()
+        $.ajax({
+            method: "POST",
+            url: "/product/adminordorder",
+            data: $(this).serialize(),
+            success: function(resp){
+                $('#partialords').html(resp)
+            }
+        })
+    })
 
     // Admin products dashboard page
     $('#edit-modal').on('show.bs.modal', function(event){
         var link = $(event.relatedTarget)
         var prod = link.data('blah')
         $(this).find('.modal-title').text('Edit Product - ID ' + prod)
+        $(this).find('#editprod').attr('action', '/admin/edit/' + prod)
+
+        $.ajax({
+            url: '/product/prodinfo',
+            data:{prod:prod},
+            success:function(resp){
+                let parsed = $.parseJSON(resp)
+                $('#editname').val(parsed['name'])
+                $('#editdesc').val(parsed['desc'])
+                $('#editprice').val(parsed['price'])
+                $('#editcat').val(parsed['cat'])
+                $('#editinv').val(parsed['inv'])
+            }
+        })
     })
 
     $('#delete-modal').on('show.bs.modal', function(event){
@@ -20,9 +61,9 @@ $(document).ready(function(){
         $(this).find('#deleteprod').attr('action', '/admin/delete/' + prod)
     })
 
-    $('.pages').click(function(){
+    $('.pages, .pages2').click(function(){
         var page = $(this).attr("page")
-        $('#pagenumbers').show()
+        $('.pagenumbers').show()
 
         if (page == "after" && !$("a[page='after']").parent().hasClass("disabled")){
             $("a[page='before']").parent().removeClass("disabled")
@@ -58,6 +99,14 @@ $(document).ready(function(){
                 $('#adminprods').html(resp)
             }
         })
+
+        $.ajax({
+            url: "/product/adminordpaginate",
+            data: {number:num},
+            success:function(resp){
+                $('#partialords').html(resp)
+            }
+        })
     })
 
     $('#adminsearchp').on('submit', function(e){
@@ -65,7 +114,7 @@ $(document).ready(function(){
     })
 
     $('#adminsearchp').keyup(function(){
-        $('#pagenumbers').hide()
+        $('.pagenumbers').hide()
         $.ajax({
             method: "POST",
             url: "/product/adminprodsearch",
@@ -78,7 +127,7 @@ $(document).ready(function(){
 
     $('#adminorderp').submit(function(e){
         e.preventDefault()
-        $('#pagenumbers').hide()
+        $('.pagenumbers').hide()
         $.ajax({
             method: "POST",
             url: "/product/adminprodorder",
@@ -91,5 +140,6 @@ $(document).ready(function(){
 
     $(".admindelete").fadeOut(1500)
     $(".adminadd").fadeOut(1500)
+    $(".adminedit").fadeOut(1500)
 
 })

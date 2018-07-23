@@ -28,7 +28,7 @@
     <button type='submit'><span class='glyphicon glyphicon-sort'></span></button>
 </form>
 <div id='productsearcher'>
-    <form action='{% url 'adminprodsearch' %}' method='post' id='adminsearchp'>
+    <form action='#' method='post' id='adminsearchp'>
         {% csrf_token %}
         <input class='form-group' type='search' name='adminsearchp'>
         <button type='submit'><span class='glyphicon glyphicon-search'></span></button>
@@ -39,7 +39,7 @@
 
 {% if messages %}
     {% for message in messages %}
-        {% if message.extra_tags == 'admindelete' or message.extra_tags == 'adminadd' %}
+        {% if message.extra_tags == 'admindelete' or message.extra_tags == 'adminadd' or message.extra_tags == 'adminedit' %}
             <p class="{{message.tags}}">{{message}}</p>
         {% endif %}
     {% endfor %}
@@ -53,12 +53,14 @@
     <col width='150'>
     <col width='120'>
     <col width='120'>
+    <col width='120'>
     <thead>
         <tr>
             <th>Picture</th>                
             <th>ID</th>                
             <th>Name</th>
             <th>Category</th>
+            <th>Price</th>
             <th>Inventory Count</th>
             <th>Quantity Sold</th>            
             <th>Action</th>            
@@ -71,6 +73,7 @@
             <td><a href='{% url 'adminprod' id=product.id %}'><b>{{product.id}}</b></a></td>
             <td>{{product.name}}</td>
             <td>{{product.category | title}}</td>
+            <td>${{product.price}}</td>
             <td>{{product.inventory}}</td>
             <td>{{product.quantity_sold}}</td>
             <td class='edit'><a href="#" data-toggle="modal" data-target="#edit-modal" data-blah='{{product.id}}'> Edit</a> <a href="#" data-toggle='modal' data-target='#delete-modal' data-blah2='{{product.id}}'>Delete</a></td>
@@ -88,17 +91,22 @@
                 <h4 class="modal-title" id="Login">Edit Product - ID</h4>
             </div>
             <div class="modal-body">
-                <form action="#" method="post" enctype="multipart/form-data">
+                <form action="#" method="post" enctype="multipart/form-data" id="editprod">
+                    {% csrf_token %}
                     <div class="form-group">
                         <label for='editname'>Name</label>
                         <input type="text" name='editname' class="form-control" id="editname" placeholder="name">
                     </div>
                     <div class="form-group">
                         <label for='editdesc'>Description</label>
-                        <textarea name='editdesc' id='editdesc' class='form-control' rows='3' placeholder='description'></textarea>
+                        <textarea name='editdesc' id='editdesc' class='form-control' rows='4' placeholder='description'></textarea>
                     </div>
                     <div class="form-group">
-                        <label for='editcat'>Category</label>
+                        <label for='editprice'>Price</label>
+                        <input type="text" name='editprice' id='editprice' class='form-control' placeholder='price'>
+                    </div>
+                    <div class="form-group">
+                        <label for='editcat'>Choose existing category</label>
                         <select name='editcat' id='editcat' class='form-control' rows='3'>
                             {% for cat in cats %}
                             <option value='{{cat}}'>{{cat|title}}</option>
@@ -106,28 +114,23 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for='newcat'>Or add a new category</label>
+                        <label for='newcat'>Add a new category</label>
                         <input type='text' name='newcat' id='newcat' placeholder='new category' class='form-control'>
                     </div>
                     <div class="form-group">
-                        <label for="editinventory">Inventory</label>
-                        <input type='text' name='editinventory' id='editinventory' placeholder='Inventory' class='form-control' rows='3'>
+                        <label for="editinv">Inventory</label>
+                        <input type='text' name='editinv' id='editinv' placeholder='Inventory' class='form-control' rows='3'>
                     </div>
                     <div class="form-group">
                         <label for='newimg'>Upload image</label>
                         <input type="file" name='newimg' id="newimg">
                     </div>
-                </form>
             </div>
             <div class='modal-footer'>
                 <div id='editer'>
                     <button class='btn btn-info form-inline' data-dismiss='modal'>Cancel</button>
-                    <form action='#' method='post'>
-                        <button class='btn btn-success' type='submit'>Preview</button>
-                    </form>
-                    <form action='#' method='post'>
-                        <button class='btn btn-primary' type='submit'>Update</button>   
-                    </form>                                                 
+                    <button class='btn btn-primary' type='submit'>Update</button>   
+                </form>                                                 
                 </div>
             </div>
         </div>
@@ -152,7 +155,7 @@
                         <textarea name='adddesc' id='adddesc' class='form-control' rows='3' placeholder='description'></textarea>
                     </div>
                     <div class="form-group">
-                        <label for='addcat'>Category</label>
+                        <label for='addcat'>Choose existing category</label>
                         <select name='addcat' id='addcat' class='form-control' rows='3'>
                             {% for cat in cats %}
                             <option value='{{cat}}'>{{cat|title}}</option>
@@ -160,7 +163,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for='addnewcat'>Or add a new category</label>
+                        <label for='addnewcat'>Add a new category</label>
                         <input type='text' name='addnewcat' id='addnewcat' placeholder='new category' class='form-control'>
                     </div>
                     <div class="form-group">
@@ -203,7 +206,7 @@
 </div>
 
 <center>
-    <div id='pagenumbers'>
+    <div class='pagenumbers'>
         <h2>
         <ul class="pagination">
             <li class="disabled"><a href="#pagenumbers" page="before" class="pages">&laquo;</a></li>

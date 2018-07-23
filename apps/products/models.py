@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 from apps.customers.models import Customer
 import re
+import os
 
 ZIP_REGEX = re.compile(r'^[0-9]{5}$')
 STATE_REGEX = re.compile(r'^[A-Z]{2}$')
@@ -27,6 +28,8 @@ class Product(models.Model):
 class OrderItem(models.Model):
     item = models.ForeignKey(Product, related_name="orderitem")
     amount = models.IntegerField()
+    def __str__(self):
+        return self.item.name
 
 class OrderManager(models.Manager):
     def order_validator(self, postdata):
@@ -71,7 +74,7 @@ class OrderManager(models.Manager):
 class Order(models.Model):
     placer = models.ForeignKey(Customer, related_name="placedorders")
     goods = models.ManyToManyField(OrderItem, related_name="whichorders")
-    status = models.CharField(max_length=50, default="Currently in transit")
+    status = models.CharField(max_length=50, default="Just placed")
     total = models.DecimalField(max_digits= 10, decimal_places=2)
 
     Sfname = models.CharField(max_length=50)
@@ -92,3 +95,15 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     objects = OrderManager()
+    def __str__(self):
+        return self.placer
+
+
+def handle_uploaded_file(file, filename):
+    with open('media/' + filename, 'wb+') as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)
+
+def _delete_file(path):
+    if os.path.isfile(path):
+        os.remove(path)

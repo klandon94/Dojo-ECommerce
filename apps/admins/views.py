@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from apps.customers.models import Customer
-from apps.products.models import Product, Order, OrderItem
+from apps.products.models import Product, Order, OrderItem, handle_uploaded_file, _delete_file
 import bcrypt
 
 def adminmain(req):
@@ -38,7 +38,7 @@ def adminlogin(req):
 
 def adminorders(req):
     if 'adloggedin' in req.session and req.session['adloggedin'] == True:
-        return render(req, 'admins/adminorders.html', context={'allorders':Order.objects.all()[0:5]})
+        return render(req, 'admins/adminorders.html', context={'allorders':Order.objects.all()[0:4]})
     req.session.clear()
     req.session['adbadlogin'] = True
     return redirect('adminmain')
@@ -46,13 +46,30 @@ def adminorders(req):
 def adminord(req, id):
     if 'adloggedin' in req.session and req.session['adloggedin'] == True:
         order = Order.objects.get(id=id)
+        tax = float(order.total) * 0.10
+        shipping = float(order.total) * 0.05
+        grand = float(order.total) + tax + shipping
         items = []
         for x in order.goods.all():
             items.append({"id":x.item.id, "prod":x.item, "price":x.item.price, "quantity":x.amount, "total":round(float(x.amount*x.item.price),2)})
-        return render(req, 'admins/adminorder.html', context={'order':order, "items":items})
+        return render(req, 'admins/adminorder.html', context={'order':order, "items":items, 'tax':round(tax,2), 'shipping':round(shipping,2), 'grand':round(grand,2)})
     req.session.clear()
     req.session['adbadlogin'] = True
     return redirect('adminmain')
+
+def updatestatus(req, id):
+    order = Order.objects.get(id=id)
+    status = req.POST['newstatus']
+    new = ''
+    if status == "in_transit":
+        new = "In Transit"
+    if status == "delivered":
+        new = "Delivered"
+    if status == "canceled":
+        new = "Canceled"
+    order.status = new
+    order.save()
+    return redirect('adminorders')
 
 def adminproducts(req):
     if 'adloggedin' in req.session and req.session['adloggedin'] == True:
@@ -62,6 +79,9 @@ def adminproducts(req):
         if 'adminadd' in req.session and req.session['adminadd'] == True:
             messages.success(req, "Successfully added a new product", extra_tags="adminadd")
             req.session['adminadd'] = False
+        if 'adminedit' in req.session and req.session['adminedit'] == True:
+            messages.success(req, "Successfully edited product", extra_tags="adminedit")
+            req.session['adminedit'] = False
         return render(req, 'admins/adminproducts.html', context={'allproducts':Product.objects.all()[0:5], 'cats':list(Product.objects.values_list('category', flat=True).distinct())})
     req.session.clear()
     req.session['adbadlogin'] = True
@@ -69,7 +89,13 @@ def adminproducts(req):
 
 def adminprod(req, id):
     if 'adloggedin' in req.session and req.session['adloggedin'] == True:
-        return render(req, 'admins/adminproduct.html', context={'prod':Product.objects.get(id=id)})
+        similarprods = []
+        prod = Product.objects.get(id=id)
+        for x in (Order.objects.filter(goods__item=prod)):
+            for y in x.goods.all():
+                if y.item != prod:
+                    similarprods.append(y.item)
+        return render(req, 'admins/adminproduct.html', context={'prod':prod, 'similarprods':similarprods[0:5]})
     req.session.clear()
     req.session['adbadlogin'] = True
     return redirect('adminmain')
@@ -84,14 +110,30 @@ def addprod(req):
     req.session['adminadd'] = True
     return redirect('adminproducts')
 
-def handle_uploaded_file(file, filename):
-    with open('media/' + filename, 'wb+') as destination:
-        for chunk in file.chunks():
-            destination.write(chunk)
+def editprod(req, id):
+    editprod = Product.objects.get(id=id)
+    if req.POST['newcat']:
+        category = req.POST['newcat']
+    else:
+        category = req.POST['editcat']
+    if req.FILES['newimg']:
+        _delete_file("media/"+str(editprod.image))
+        handle_uploaded_file(req.FILES['newimg'], str(req.FILES['newimg']))
+        editprod.image = str(req.FILES['newimg'])
+    editprod.name = req.POST['editname']
+    editprod.desc = req.POST['editdesc']
+    editprod.price = round(float(req.POST['editprice']),2)
+    editprod.category = category
+    editprod.inventory = int(req.POST['editinv'])
+    editprod.save()
+    req.session['adminedit'] = True
+    return redirect('adminproducts')
+
 
 def deleteprod(req, id):
     if 'adloggedin' in req.session and req.session['adloggedin'] == True:
         deleteprod = Product.objects.get(id=id)
+        _delete_file("media/"+str(deleteprod.image))
         deleteprod.delete()
         req.session['admindelete'] = True
         return redirect('adminproducts')

@@ -1,5 +1,6 @@
-from django.shortcuts import render,redirect
-from .models import Product
+from django.shortcuts import render,redirect, HttpResponse
+from .models import Product, Order
+import json
 
 def productlist(req):
     category = req.GET['category']
@@ -29,6 +30,18 @@ def searchprods(req):
     prods = Product.objects.filter(name__startswith=keyword)
     return render(req, "products/allproducts.html", {'products': prods, 'keyword': keyword})
 
+def prodinfo(req):
+    prod_id = req.GET['prod']
+    prod = Product.objects.get(id=prod_id)
+    data = {
+        'name': prod.name,
+        'desc': prod.desc,
+        'price': float(prod.price),
+        'cat': prod.category,
+        'inv': prod.inventory,
+    }
+    return HttpResponse(json.dumps(data))
+
 def sortprods(req):
     sorted = req.POST['sort_by']
     orderby = 'name'
@@ -51,18 +64,42 @@ def adminprodpaginate(req):
         before = 5 * (int(number)-1)
         after = 5 * int(number)
     products = Product.objects.all()[before:after]
-    context = {
-        'page': number,
-        'allproducts': products,
-    }
-    return render(req, "admins/partialprods.html", context)
+    return render(req, "admins/partialprods.html", {'page': number, 'allproducts': products})
 
+def adminordpaginate(req):
+    number = req.GET['number']
+    if int(number) == 1:
+        after = 4
+        before = 0
+    else:
+        before = 4 * (int(number)-1)
+        after = 4 * int(number)
+    orders = Order.objects.all()[before:after]
+    return render(req, "admins/partialords.html", {'page':number, 'allorders':orders})
+    
 def adminprodsearch(req):
     keyword = req.POST['adminsearchp']
     prods = Product.objects.filter(name__startswith=keyword)
     return render(req, "admins/partialprods.html", {'allproducts': prods})
 
+def adminordsearch(req):
+    keyword = req.POST['adminsearcho']
+    ords = Order.objects.filter(placer__first_name__startswith=keyword)|Order.objects.filter(placer__last_name__startswith=keyword)
+    return render(req, "admins/partialords.html", {'allorders': ords})
+
 def adminprodorder(req):
     sorted = req.POST['orderby']
     prods = Product.objects.order_by(sorted)
     return render(req, "admins/partialprods.html", {'allproducts':prods})
+
+def adminordorder(req):
+    sorted = req.POST['orderby']
+    orderby = 'id'
+    if sorted == 'name':
+        orderby = 'placer__first_name'
+    if sorted == 'price_lo':
+        orderby = 'total'
+    if sorted == 'price_hi':
+        orderby = '-total'
+    ords = Order.objects.order_by(orderby)
+    return render(req, "admins/partialords.html", {'allorders':ords})

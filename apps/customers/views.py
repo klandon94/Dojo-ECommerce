@@ -59,12 +59,12 @@ def custlogin(req):
 def dashboard(req):
     if 'logged_in' in req.session and req.session['logged_in'] == True:
         if 'placedorder' in req.session and req.session['placedorder'] == True:
-            messages.success(req, "Successfully placed an order", extra_tags="placedorder")
+            messages.success(req, "Successfully placed order", extra_tags="placedorder")
             req.session['placedorder'] = False
         catlist = []
         for x in list(Product.objects.values_list('category', flat=True).distinct()):
             catlist.append({"cat":x, "catnum":Product.objects.category_num(x)})
-        return render(req, 'customers/products.html', context = {'categories': catlist})
+        return render(req, 'customers/products.html', {'categories': catlist})
     req.session.clear()
     req.session['badlogin'] = True
     return redirect('mainpage')
@@ -73,7 +73,13 @@ def oneprod(req, id):
     if 'addedcart' in req.session and req.session['addedcart'] == True:
         messages.success(req, "Successfully added to cart", extra_tags="addedcart")
         req.session['addedcart'] = False
-    return render(req, 'customers/oneproduct.html', context={'prod':Product.objects.get(id=id)})
+    similarprods = []
+    prod = Product.objects.get(id=id)
+    for x in (Order.objects.filter(goods__item=prod)):
+        for y in x.goods.all():
+            if y.item != prod:
+                similarprods.append(y.item)
+    return render(req, 'customers/oneproduct.html', {'prod':prod, 'similarprods': similarprods[0:5]})
 
 def purchase(req, id):
     if req.method == 'POST':
@@ -93,7 +99,7 @@ def shoppingcart(req):
         for x in req.session['shoppingcart']:
             cumulative += x['total']
     cumulative = round(cumulative,2)
-    return render(req, 'customers/shoppingcart.html', context={'grandtotal':cumulative})
+    return render(req, 'customers/shoppingcart.html', {'grandtotal':cumulative})
 
 def cartdelete(req, word):
     cart = req.session['shoppingcart']
@@ -127,15 +133,18 @@ def placeorder(req):
         else:
             user = Customer.objects.get(id=req.session['id'])
             cart = req.session['shoppingcart']
+            grand_total = 0
             items = []
             for x in cart:
                 prod = Product.objects.get(name=x['item'])
                 amt = int(x['quantity'])
                 prod.inventory -= amt
                 prod.quantity_sold += amt
+                grand_total+=x['total']
                 prod.save()
                 items.append(OrderItem.objects.create(item=prod, amount=amt))
-            neworder = Order.objects.create(placer=user, Sfname=req.POST['Sfname'], Slname=req.POST['Slname'], Saddress=req.POST['Saddress'], Scity=req.POST['Scity'], Sstate=req.POST['Sstate'], Szip=req.POST['Szip'], Bfname=req.POST['Bfname'], Blname=req.POST['Blname'], Baddress=req.POST['Baddress'], Bcity=req.POST['Bcity'], Bstate=req.POST['Bstate'], Bzip=req.POST['Bzip'])
+            grand_total = round(grand_total, 2)
+            neworder = Order.objects.create(placer=user, total=grand_total, Sfname=req.POST['Sfname'], Slname=req.POST['Slname'], Saddress=req.POST['Saddress'], Scity=req.POST['Scity'], Sstate=req.POST['Sstate'], Szip=req.POST['Szip'], Bfname=req.POST['Bfname'], Blname=req.POST['Blname'], Baddress=req.POST['Baddress'], Bcity=req.POST['Bcity'], Bstate=req.POST['Bstate'], Bzip=req.POST['Bzip'])
             for x in items:
                 neworder.goods.add(x)
             neworder.save()

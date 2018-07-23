@@ -17,24 +17,32 @@
     </div>
 </nav>
 
-<form action='#' method='' class='form-inline' id='ordersearcher'>
+<form action='{% url 'adminordorder' %}' method='post' class='form-inline' id='adminordero'>
     {% csrf_token %}
-    <label for='searchby'>Search by:</label>
-    <select name="searchby" class="form-group" id='searchby'>
-        <option>Order ID</option>
-        <option>Customer Name</option>                                            
-        <option>Date</option>                                            
+    <label for='orderby'>Order by:</label>
+    <select name="orderby" class="form-group" id='orderby'>
+        <option value="id">Order ID</option>
+        <option value="name">Customer Name</option>            
+        <option value="price_lo">Total ($ to $$$)</option>              
+        <option value="price_hi">Total ($$$ to $)</option>
     </select>
-    <br><br>
-    <input class='form-group' type='search' name='adminsearcho'>
-    <button type='submit'><span class='glyphicon glyphicon-search'></span></button>
+    <button type='submit'><span class='glyphicon glyphicon-sort'></span></button>
 </form>
+<div id='ordersearcher'>
+    <form action='#' method='post' id='adminsearcho'>
+        {% csrf_token %}
+        <label for="search">Search by customer name:</label>
+        <input class='form-group' type='search' name='adminsearcho'>
+        <button type='submit'><span class='glyphicon glyphicon-search'></span></button>
+    </form>
+</div>
 
+<div id='partialords'>
 <table id='orders' class='table table-bordered table-striped table-hover'>
     <col width='100'>
     <col width='150'>
     <col width='120'>
-    <col width='450'>
+    <col width='350'>
     <col width='150'>
     <thead>
         <tr>
@@ -43,7 +51,8 @@
             <th>Date</th>
             <th>Billing Address</th>
             <th>Total</th>            
-            <th>Status</th>            
+            <th>Status</th>
+            <th>Update Status</th>            
         </tr>
     </thead>
     {% for order in allorders %}
@@ -52,28 +61,40 @@
             <td><a href='{% url 'adminord' id=order.id %}'><b>{{order.id}}</b></a></td>
             <td>{{order.placer.first_name}} {{order.placer.last_name}}</td>
             <td>{{order.created_at}}</td>
-            <td>{{order.Baddress}} {{order.Bcity}}, {{order.Bstate}}</td>
+            <td>{{order.Baddress}} <br>{{order.Bcity}}, {{order.Bstate}} {{order.Bzip}}</td>
             <td>${{order.total}}</td>
             <td>{{order.status}}</td>
+            <td>
+                <form action='{% url 'updatestatus' id=order.id %}' method="post">
+                    {% csrf_token %}
+                    <select name="newstatus" class="form-group" id="newstatus">
+                        <option value="in_transit">In transit</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="canceled">Canceled</option>                        
+                    </select>
+                    <input type="submit" value="Update" class='btn btn-success'>
+                </form>
+            </td>
         </tr>
     </tbody>    
-    {% endfor %}     
+    {% endfor %}    
 </table>
+</div>
 
 <center>
-    <div id='pagenumbers'>
+    <div class='pagenumbers'>
         <h2>
         <ul class="pagination">
-            <li class="disabled"><a href="#pagenumbers" page="before" class="pages">&laquo;</a></li>
-            <li class="active"><a href="#pagenumbers" page="1" class="pages">1</a></li>
-            <li><a href="#pagenumbers" page="2" class="pages">2</a></li>
-            <li><a href="#pagenumbers" page="3" class="pages">3</a></li>
-            <li><a href="#pagenumbers" page="4" class="pages">4</a></li>
-            <li><a href="#pagenumbers" page="5" class="pages">5</a></li>
-            <li><a href="#pagenumbers" page="6" class="pages">6</a></li>
-            <li><a href="#pagenumbers" page="7" class="pages">7</a></li>
-            <li><a href="#pagenumbers" page="8" class="pages">8</a></li>
-            <li><a href="#pagenumbers" page="after" class="pages">&raquo;</a></li>
+            <li class="disabled"><a href="#pagenumbers" page="before" class="pages2">&laquo;</a></li>
+            <li class="active"><a href="#pagenumbers" page="1" class="pages2">1</a></li>
+            <li><a href="#pagenumbers" page="2" class="pages2">2</a></li>
+            <li><a href="#pagenumbers" page="3" class="pages2">3</a></li>
+            <li><a href="#pagenumbers" page="4" class="pages2">4</a></li>
+            <li><a href="#pagenumbers" page="5" class="pages2">5</a></li>
+            <li><a href="#pagenumbers" page="6" class="pages2">6</a></li>
+            <li><a href="#pagenumbers" page="7" class="pages2">7</a></li>
+            <li><a href="#pagenumbers" page="8" class="pages2">8</a></li>
+            <li><a href="#pagenumbers" page="after" class="pages2">&raquo;</a></li>
         </ul>
         </h2>
     </div>

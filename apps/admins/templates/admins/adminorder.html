@@ -21,7 +21,7 @@
     <p class='orderid'>Order ID: #{{order.id}}</p>
     <br>
     <b>Customer shipping info</b>:
-    <p>Name: {{order.Sfname}} {{order.placer.Slname}}</p>
+    <p>Name: {{order.Sfname}} {{order.Slname}}</p>
     <p>Address: {{order.Saddress}} </p>
     <p>City: {{order.Scity}}</p>
     <p>State: {{order.Sstate}}</p>
@@ -65,8 +65,9 @@
 
     <div id='priceinfo'>
         <p>Subtotal: ${{order.total}}</p>
-        <p>Shipping: $5</p>
-        <p>Total Price: $1545</p>
+        <p>Shipping: ${{shipping}}</p>
+        <p>Tax: ${{tax}}</p>
+        <p>Total Price: ${{grand}}</p>
     </div>
 
 </div>

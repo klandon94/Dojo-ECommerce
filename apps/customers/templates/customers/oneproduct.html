@@ -20,7 +20,7 @@
 <div class='row'>
     <div class="col-md-3" id='prod'>
         <h2>{{prod.name}}</h2>
-        <img class='productimg' src={{prod.image.url}} style='height:370px;'>
+        <img class='productimg' src={{prod.image.url}}>
     </div>
 
     <div class='col-md-4' id='desc'>
@@ -61,48 +61,16 @@
     </div>
 </div>
 <div class='row' id='similar'>
-    <h2>Customers also bought:</h2>
+    <h2>Customers also bought (first 5):</h2>
+    {% for prod in similarprods %}
     <div class='col-md-2'>
-        {% load static %}
-        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
+        <a href='{% url 'oneprod' id=prod.id %}'><img class='simprods' src={{prod.image.url}}></a>
         <span class='simdesc'>
-            <p><b>Apple</b></p>
-            <p>$20</p>
+            <p><b>{{prod.name}}</b></p>
+            <p>${{prod.price}}</p>
         </span>
     </div>
-    <div class='col-md-2'>
-        {% load static %}
-        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
-        <span class='simdesc'>
-            <p><b>Apple</b></p>
-            <p>$20</p>
-        </span>
-    </div>
-    <div class='col-md-2'>
-        {% load static %}
-        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
-        <span class='simdesc'>
-            <p><b>Apple</b></p>
-            <p>$20</p>
-        </span>
-    </div>
-    <div class='col-md-2'>
-        {% load static %}
-        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
-        <span class='simdesc'>
-            <p><b>Apple</b></p>
-            <p>$20</p>
-        </span>
-    </div>
-    <div class='col-md-2'>
-        {% load static %}
-        <img class='productimg' src="{% static "customers/img/apple.jpg" %}">
-        <span class='simdesc'>
-            <p><b>Apple</b></p>
-            <p>$20</p>
-        </span>
-    </div>
-    
+    {% endfor %}
 </div>
 
 {% endblock %}
