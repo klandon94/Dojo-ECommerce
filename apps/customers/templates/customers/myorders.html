@@ -21,9 +21,9 @@
 {% if myorders|length > 0 %}
 <h1 class="clarify">Orders in progress</h1>
 {% for order in myorders %}
-{% if order.status == "In Transit" or order.status == "Just Placed" %}
+{% if order.status == "In Transit" or order.status == "Just placed" %}
 <h2 class="status">{{order.status}} -- placed {{order.created_at}}</h2>
-<h3 class="status">Delivering to {{order.Sfname}} {{order.Slname}} @ {{order.Saddress}}</h3>
+<h3 class="status">Delivering to {{order.Sfname}} {{order.Slname}} @ {{order.Saddress}}, {{order.Scity}}, {{order.Sstate}} {{order.Szip}}</h3>
 <center>
 <table class='table table-bordered table-striped table-hover myorders' style="width:75%">
     <thead>
@@ -55,7 +55,7 @@
 {% for order in myorders %}
 {% if order.status == "Delivered" %}
 <h2 class="status">{{order.status}} -- delivered on {{order.updated_at}}</h2>
-<h3 class="status">Delivered to {{order.Sfname}} {{order.Slname}} @ {{order.Saddress}}</h3>
+<h3 class="status">Delivered to {{order.Sfname}} {{order.Slname}} @ {{order.Saddress}}, {{order.Scity}}, {{order.Sstate}} {{order.Szip}}</h3>
 <center>
 <table class='table table-bordered table-striped table-hover myorders' style="width:75%">
     <thead>
