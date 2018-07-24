@@ -14,6 +14,10 @@
     font-style:italic;
 }
 
+#footer{
+    background-color:lightgrey;
+}
+
 /* Customer product dashboard page*/
 #products, #user, #dashpics{
     display:none;
@@ -46,6 +50,19 @@
 }
 #sortby{
     margin-top:30px;
+}
+
+/* Customer myorders page */
+.myorders{
+    margin-bottom:20px;
+}
+.status{
+    margin-left:20px;
+}
+.clarify{
+    font-style:italic;
+    font-weight:bold;
+    color:red;
 }
 
 /* Customer single product page */

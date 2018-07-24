@@ -51,7 +51,7 @@ def adminord(req, id):
         grand = float(order.total) + tax + shipping
         items = []
         for x in order.goods.all():
-            items.append({"id":x.item.id, "prod":x.item, "price":x.item.price, "quantity":x.amount, "total":round(float(x.amount*x.item.price),2)})
+            items.append({"id":x.item.id, "prod":x.item.name, "price":x.price, "quantity":x.amount, "total":round(float(x.amount*x.price),2)})
         return render(req, 'admins/adminorder.html', context={'order':order, "items":items, 'tax':round(tax,2), 'shipping':round(shipping,2), 'grand':round(grand,2)})
     req.session.clear()
     req.session['adbadlogin'] = True
@@ -65,8 +65,8 @@ def updatestatus(req, id):
         new = "In Transit"
     if status == "delivered":
         new = "Delivered"
-    if status == "canceled":
-        new = "Canceled"
+    if status == "cancelled":
+        new = "Cancelled"
     order.status = new
     order.save()
     return redirect('adminorders')
@@ -116,7 +116,7 @@ def editprod(req, id):
         category = req.POST['newcat']
     else:
         category = req.POST['editcat']
-    if req.FILES['newimg']:
+    if len(req.FILES) != 0:
         _delete_file("media/"+str(editprod.image))
         handle_uploaded_file(req.FILES['newimg'], str(req.FILES['newimg']))
         editprod.image = str(req.FILES['newimg'])
@@ -128,7 +128,6 @@ def editprod(req, id):
     editprod.save()
     req.session['adminedit'] = True
     return redirect('adminproducts')
-
 
 def deleteprod(req, id):
     if 'adloggedin' in req.session and req.session['adloggedin'] == True:

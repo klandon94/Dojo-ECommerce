@@ -11,6 +11,7 @@
             <li><a><span class='glyphicon glyphicon-user'></span> {{request.session.customer}}</a></li>
         </div>
         <ul class='nav navbar-nav navbar-right menu'>
+            <li><a href='{% url 'myorders' %}'><span class="glyphicon glyphicon-qrcode"></span> My Orders</a></li>
             <li><a href='{% url 'shoppingcart' %}'><span class='glyphicon glyphicon-shopping-cart'></span> Shopping Cart ({{request.session.shoppingcart|length}})</a></li>  
             <li><a href='{% url 'customerlogout' %}'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>                        
         </ul>
@@ -61,7 +62,7 @@
     </div>
 </div>
 <div class='row' id='similar'>
-    <h2>Customers also bought (first 5):</h2>
+    <h2>Customers also bought:</h2>
     {% for prod in similarprods %}
     <div class='col-md-2'>
         <a href='{% url 'oneprod' id=prod.id %}'><img class='simprods' src={{prod.image.url}}></a>

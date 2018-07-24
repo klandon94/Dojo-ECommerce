@@ -67,6 +67,19 @@
     padding:20px;
     font-size:25px;
 }
+#truck, #transit{
+    width:450px;
+    height:450px;
+    position:absolute;
+    left:500px;
+    top:200px;
+}
+#cancelled{
+    width:550px;
+    position:absolute;
+    left:225px;
+    top:150px;
+}
 
 /* Admin product dashboard*/
 #products{

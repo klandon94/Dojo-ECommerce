@@ -8,7 +8,7 @@
     <div class='container-fluid'>
         <div class='nav navbar-nav navbar-header'>
             <a class='navbar-brand active' href='#'>Admin Dashboard</a>             
-            <li><a href='{% url 'adminorders' %}'><span class='glyphicon glyphicon-barcode'></span> Orders</a></li>
+            <li><a href='{% url 'adminorders' %}'><span class='glyphicon glyphicon-qrcode'></span> Orders</a></li>
             <li><a href='{% url 'adminproducts' %}'><span class='glyphicon glyphicon-tag'></span> Products</a></li>
         </div>
         <ul class='nav navbar-nav navbar-right'>                
@@ -50,7 +50,7 @@
         <tbody>
             <tr>
                 <td>{{item.id}}</td>                
-                <td>{{item.prod.name}}</td>
+                <td>{{item.prod}}</td>
                 <td>${{item.price}}</td>
                 <td>{{item.quantity}}</td>
                 <td>${{item.total}}</td>
@@ -61,6 +61,7 @@
 
     <div id='status'>
         <h2>{{order.status}}</h2>
+        <p>{{order.updated_at}}</p>
     </div>
 
     <div id='priceinfo'>
@@ -69,6 +70,27 @@
         <p>Tax: ${{tax}}</p>
         <p>Total Price: ${{grand}}</p>
     </div>
+
+    {% if order.status == "Delivered" %}
+    <div id="checkedtruck">
+        {% load static %}
+        <img src="{% static "admins/img/checked-truck.png" %}" alt="deliveredtruck" id="truck">
+    </div>
+    {% endif %}
+
+    {% if order.status == "In Transit" %}
+    <div id="intransit">
+        {% load static %}
+        <img src="{% static "admins/img/in-transit.png" %}" alt="intransit" id="transit">
+    </div>
+    {% endif %}
+
+    {% if order.status == "Cancelled" %}
+    <div id="cancelled">
+        {% load static %}
+        <img src="{% static "admins/img/cancelled.jpg" %}" alt="cancelled" id="cancelled">
+    </div>
+    {% endif %}
 
 </div>
 

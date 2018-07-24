@@ -8,7 +8,7 @@
     <div class='container-fluid'>
         <div class='nav navbar-nav navbar-header'>
             <a class='navbar-brand active' href='#'>Admin Dashboard</a>             
-            <li><a href='{% url 'adminorders' %}'><span class='glyphicon glyphicon-barcode'></span> Orders</a></li>
+            <li><a href='{% url 'adminorders' %}'><span class='glyphicon glyphicon-qrcode'></span> Orders</a></li>
             <li><a href='{% url 'adminproducts' %}'><span class='glyphicon glyphicon-tag'></span> Products</a></li>
         </div>
         <ul class='nav navbar-nav navbar-right'>                
@@ -48,7 +48,7 @@
         <tr>
             <th>Order ID</th>                
             <th>Customer Name</th>                
-            <th>Date</th>
+            <th>Date Placed</th>
             <th>Billing Address</th>
             <th>Total</th>            
             <th>Status</th>
@@ -70,7 +70,7 @@
                     <select name="newstatus" class="form-group" id="newstatus">
                         <option value="in_transit">In transit</option>
                         <option value="delivered">Delivered</option>
-                        <option value="canceled">Canceled</option>                        
+                        <option value="cancelled">Cancelled</option>                        
                     </select>
                     <input type="submit" value="Update" class='btn btn-success'>
                 </form>

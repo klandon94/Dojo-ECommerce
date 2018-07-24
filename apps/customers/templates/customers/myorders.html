@@ -1,0 +1,90 @@
+{% extends 'customers/custindex.html' %}
+
+{% block title %} My Orders {% endblock %}
+
+{% block myorders %}
+
+<nav class='navbar navbar-inverse'>
+    <div class='container-fluid'>
+        <div class='nav navbar-nav navbar-header'>
+            <a class='navbar-brand active' href='{% url 'dashboard' %}'>CodingDojo E-Commerce</a>             
+            <li><a><span class='glyphicon glyphicon-user'></span> {{request.session.customer}}</a></li>
+        </div>
+        <ul class='nav navbar-nav navbar-right menu'>
+            <li><a href='{% url 'myorders' %}'><span class="glyphicon glyphicon-qrcode"></span> My Orders</a></li>
+            <li><a href='{% url 'shoppingcart' %}'><span class='glyphicon glyphicon-shopping-cart'></span> Shopping Cart ({{request.session.shoppingcart|length}})</a></li>  
+            <li><a href='{% url 'customerlogout' %}'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>                        
+        </ul>
+    </div>
+</nav>
+
+{% if myorders|length > 0 %}
+<h1 class="clarify">Orders in progress</h1>
+{% for order in myorders %}
+{% if order.status == "In Transit" or order.status == "Just Placed" %}
+<h2 class="status">{{order.status}} -- placed {{order.created_at}}</h2>
+<h3 class="status">Delivering to {{order.Sfname}} {{order.Slname}} @ {{order.Saddress}}</h3>
+<center>
+<table class='table table-bordered table-striped table-hover myorders' style="width:75%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Item</th>                
+            <th>Price</th>                
+            <th>Quantity</th>
+            <th>Total</th>            
+        </tr>
+    </thead>
+    {% for x in order.goods.all %}
+    <tbody>
+        <tr>
+            <td>{{x.item.id}}</td>                
+            <td>{{x.item.name}}</td>
+            <td>${{x.price}}</td>
+            <td>{{x.amount}}</td>
+            <td>${% widthratio x.price 1 x.amount %}</td>
+        </tr>
+    </tbody>   
+    {% endfor %}       
+</table>
+</center>
+{% endif %}
+{% endfor %}
+
+<h1 class="clarify">Delivered orders</h1>
+{% for order in myorders %}
+{% if order.status == "Delivered" %}
+<h2 class="status">{{order.status}} -- delivered on {{order.updated_at}}</h2>
+<h3 class="status">Delivered to {{order.Sfname}} {{order.Slname}} @ {{order.Saddress}}</h3>
+<center>
+<table class='table table-bordered table-striped table-hover myorders' style="width:75%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Item</th>                
+            <th>Price</th>                
+            <th>Quantity</th>
+            <th>Total</th>            
+        </tr>
+    </thead>
+    {% for x in order.goods.all %}
+    <tbody>
+        <tr>
+            <td>{{x.item.id}}</td>                
+            <td>{{x.item.name}}</td>
+            <td>${{x.price}}</td>
+            <td>{{x.amount}}</td>
+            <td>${% widthratio x.price 1 x.amount %}</td>
+        </tr>
+    </tbody>   
+    {% endfor %}       
+</table>
+</center>
+{% endif %}
+{% endfor %}
+
+{% else %}
+    <h1>NO ORDERS HAVE BEEN PLACED AS OF YET</h1>
+{% endif %}
+
+{% endblock %}

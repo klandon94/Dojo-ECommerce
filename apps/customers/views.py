@@ -69,6 +69,14 @@ def dashboard(req):
     req.session['badlogin'] = True
     return redirect('mainpage')
 
+def myorders(req):
+    if 'logged_in' in req.session and req.session['logged_in'] == True:
+        myorders = Order.objects.filter(placer=Customer.objects.get(id=req.session['id']))
+        return render(req, "customers/myorders.html", {"myorders":myorders})
+    req.session.clear()
+    req.session['badlogin'] = True
+    return redirect('mainpage')
+
 def oneprod(req, id):
     if 'addedcart' in req.session and req.session['addedcart'] == True:
         messages.success(req, "Successfully added to cart", extra_tags="addedcart")
@@ -138,11 +146,12 @@ def placeorder(req):
             for x in cart:
                 prod = Product.objects.get(name=x['item'])
                 amt = int(x['quantity'])
+                price = x['price']
                 prod.inventory -= amt
                 prod.quantity_sold += amt
-                grand_total+=x['total']
+                grand_total += x['total']
                 prod.save()
-                items.append(OrderItem.objects.create(item=prod, amount=amt))
+                items.append(OrderItem.objects.create(item=prod, amount=amt, price=price))
             grand_total = round(grand_total, 2)
             neworder = Order.objects.create(placer=user, total=grand_total, Sfname=req.POST['Sfname'], Slname=req.POST['Slname'], Saddress=req.POST['Saddress'], Scity=req.POST['Scity'], Sstate=req.POST['Sstate'], Szip=req.POST['Szip'], Bfname=req.POST['Bfname'], Blname=req.POST['Blname'], Baddress=req.POST['Baddress'], Bcity=req.POST['Bcity'], Bstate=req.POST['Bstate'], Bzip=req.POST['Bzip'])
             for x in items:

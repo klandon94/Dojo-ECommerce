@@ -27,6 +27,7 @@ class Product(models.Model):
 
 class OrderItem(models.Model):
     item = models.ForeignKey(Product, related_name="orderitem")
+    price = models.DecimalField(max_digits= 10, decimal_places=2)
     amount = models.IntegerField()
     def __str__(self):
         return self.item.name
@@ -95,9 +96,6 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     objects = OrderManager()
-    def __str__(self):
-        return self.placer
-
 
 def handle_uploaded_file(file, filename):
     with open('media/' + filename, 'wb+') as destination:
