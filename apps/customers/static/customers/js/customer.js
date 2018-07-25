@@ -192,7 +192,7 @@ $(document).ready(function(){
     $("#placeorder").submit(function(e){
         e.preventDefault()
         let errors = 0
-        let card_regex = /^\d{4}-?\d{4}-?\d{4}$/
+        let card_regex = /^\d{4}-?\d{4}-?\d{4}-?\d{4}$/
         let code_regex = /^\d{3}$/
         let exp_regex = /^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/
         if ($("#card").val() == ""){

@@ -32,6 +32,8 @@ def register(req):
     else:
         hash1 = bcrypt.hashpw(req.POST['reg_password'].encode(), bcrypt.gensalt())
         newcustomer = Customer(first_name=req.POST['first_name'], last_name=req.POST['last_name'], email=req.POST['reg_email'], password=hash1)
+        if len(Customer.objects.all()) < 1:
+            newcustomer.isAdmin = True
         newcustomer.save()
         req.session['customer'] = newcustomer.first_name
         req.session['id'] = newcustomer.id
