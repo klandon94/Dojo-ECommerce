@@ -18,6 +18,21 @@
     <script src="{% static 'admins/js/admin.js' %}"></script>
 </head>
 <body>
+    {% if request.session.adloggedin == True %}
+    <nav class='navbar navbar-dark'>
+        <div class='container-fluid'>
+            <div class='nav navbar-nav navbar-header'>
+                <a class='navbar-brand active' href='#'>Admin Dashboard</a>             
+                <li><a href='{% url 'adminorders' %}'><span class='glyphicon glyphicon-qrcode'></span> Orders</a></li>
+                <li><a href='{% url 'adminproducts' %}'><span class='glyphicon glyphicon-tag'></span> Products</a></li>
+            </div>
+            <ul class='nav navbar-nav navbar-right'>                
+                <li><a href='{% url 'adminlogout' %}'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>                        
+            </ul>
+        </div>
+    </nav>
+    {% endif %}
+
     {% block adminlogin %}
     {% endblock %}
 

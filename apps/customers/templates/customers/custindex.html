@@ -18,6 +18,28 @@
     <script src="{% static 'customers/js/customer.js' %}"></script>
 </head>
 <body>
+    <nav class='navbar navbar-inverse'>
+        <div class='container-fluid'>
+            <div class='nav navbar-nav navbar-header'>
+                {% if request.session.logged_in == True %}
+                <a class='navbar-brand active' href='{% url 'dashboard' %}'>CodingDojo E-Commerce</a>             
+                <li><a><span class='glyphicon glyphicon-user'></span> {{request.session.customer}}</a></li>
+                {% else %}
+                <a class='navbar-brand active' href='#'>CodingDojo E-Commerce</a>
+                {% endif %}
+            </div>
+            <ul class='nav navbar-nav navbar-right menu'>
+                {% if request.session.logged_in == True %}
+                <li><a href='{% url 'myorders' %}'><span class="glyphicon glyphicon-qrcode"></span> My Orders</a></li>
+                <li><a href='{% url 'shoppingcart' %}'><span class='glyphicon glyphicon-shopping-cart'></span> Shopping Cart ({{request.session.shoppingcart|length}})</a></li>  
+                <li><a href='{% url 'customerlogout' %}'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>      
+                {% else %}
+                <li><a href="#" data-toggle="modal" data-target="#login-modal"><span class='glyphicon glyphicon-log-in'></span> Login</a></li>
+                <li><a href="#" data-toggle='modal' data-target='#register-modal'>Register</a></li>    
+                {% endif %}          
+            </ul>
+        </div>
+    </nav>
     {% block mainpage %}
     {% endblock %}
 

@@ -25,15 +25,19 @@
             <td>${{order.total}}</td>
             <td>{{order.status}}</td>
             <td>
+                {% if order.status != "Cancelled" %}
                 <form action='{% url 'updatestatus' id=order.id %}' method="post">
                     {% csrf_token %}
                     <select name="newstatus" class="form-group" id="newstatus">
                         <option value="in_transit">In transit</option>
                         <option value="delivered">Delivered</option>
-                        <option value="canceled">Canceled</option>                        
+                        <option value="cancelled">Cancelled</option>                        
                     </select>
                     <input type="submit" value="Update" class='btn btn-success'>
                 </form>
+                {% else %}
+                <span class="error">Order has been cancelled</span>
+                {% endif %}
             </td>
         </tr>
     </tbody>    

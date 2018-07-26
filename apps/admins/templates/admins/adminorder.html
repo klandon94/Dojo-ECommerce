@@ -4,19 +4,6 @@
 
 {% block order %}
 
-<nav class='navbar navbar-dark' style='background-color:red;'>
-    <div class='container-fluid'>
-        <div class='nav navbar-nav navbar-header'>
-            <a class='navbar-brand active' href='#'>Admin Dashboard</a>             
-            <li><a href='{% url 'adminorders' %}'><span class='glyphicon glyphicon-qrcode'></span> Orders</a></li>
-            <li><a href='{% url 'adminproducts' %}'><span class='glyphicon glyphicon-tag'></span> Products</a></li>
-        </div>
-        <ul class='nav navbar-nav navbar-right'>                
-            <li><a href='{% url 'adminlogout' %}'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>                        
-        </ul>
-    </div>
-</nav>
-
 <div class='col-md-3' id='orderinfo'>
     <p class='orderid'>Order ID: #{{order.id}}</p>
     <br>
@@ -59,9 +46,15 @@
         {% endfor %}       
     </table>
 
-    <div id='status'>
+    <div class="status">
+        <h2>Order placed:</h2>
+        <i><p>{{order.created_at}}</p></i>
+    </div>
+
+    <div class='status'>
+        <h3>Current status:</h3>
         <h2>{{order.status}}</h2>
-        <p>{{order.updated_at}}</p>
+        <i><p>{{order.updated_at}}</p></i>
     </div>
 
     <div id='priceinfo'>

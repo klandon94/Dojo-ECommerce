@@ -8,7 +8,7 @@ def adminmain(req):
     if 'adloggedin' not in req.session:
         req.session['logged_in'] = False
     if 'adloggedout' in req.session and req.session['adloggedout'] == True:
-        messages.success(req, "You've been successfully logged out, Mr. Landon", extra_tags='adlogout')
+        messages.success(req, "You've been successfully logged out, Mr. {}".format(Customer.objects.get(isAdmin=True).last_name), extra_tags='adlogout')
         req.session['adloggedout'] = False
     if 'adbadlogin' in req.session and req.session['adbadlogin'] == True:
         messages.error(req, "You must be logged in to enter this webpage", extra_tags='adlogout')

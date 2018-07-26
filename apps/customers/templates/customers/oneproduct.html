@@ -4,20 +4,6 @@
 
 {% block singleprod %}
 
-<nav class='navbar navbar-inverse'>
-    <div class='container-fluid'>
-        <div class='nav navbar-nav navbar-header'>
-            <a class='navbar-brand active' href='{% url 'dashboard' %}'>CodingDojo E-Commerce</a>             
-            <li><a><span class='glyphicon glyphicon-user'></span> {{request.session.customer}}</a></li>
-        </div>
-        <ul class='nav navbar-nav navbar-right menu'>
-            <li><a href='{% url 'myorders' %}'><span class="glyphicon glyphicon-qrcode"></span> My Orders</a></li>
-            <li><a href='{% url 'shoppingcart' %}'><span class='glyphicon glyphicon-shopping-cart'></span> Shopping Cart ({{request.session.shoppingcart|length}})</a></li>  
-            <li><a href='{% url 'customerlogout' %}'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>                        
-        </ul>
-    </div>
-</nav>
-
 <div class='row'>
     <div class="col-md-3" id='prod'>
         <h2>{{prod.name}}</h2>

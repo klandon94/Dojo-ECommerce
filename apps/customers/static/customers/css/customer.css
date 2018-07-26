@@ -161,3 +161,15 @@ img:hover{
 #pay{
     margin-right:50px;
 }
+
+/* Customer myorders page */
+.myorders{
+    width:75%;
+}
+#canceller{
+    display:flex;
+    justify-content:space-around;
+}
+#cancel{
+    margin-left:200px;
+}

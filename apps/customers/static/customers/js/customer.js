@@ -88,7 +88,6 @@ $(document).ready(function(){
     // Products dashboard
     $('#products').fadeIn(1000)
     $('#dashpics').fadeIn(2800)
-    $('#user').fadeIn(2000)
     $('#pagenumbers').hide()
 
     $('.placedorder').fadeOut(1500)
@@ -232,6 +231,14 @@ $(document).ready(function(){
         else $('.exp').remove()
 
         if (errors == 0) $("#placeorder")[0].submit()
+    })
+
+    // My orders page
+    $('#cancel-modal').on('show.bs.modal', function(event){
+        var link = $(event.relatedTarget)
+        var ord = link.data('identifier')
+        $(this).find('.modal-title').text('Are you sure you want to cancel order ' + ord +"? No refunds and this cannot be undone!")
+        $(this).find('#cancelord').attr('action', '/ecommerce/cancel/' + ord)
     })
 
 })

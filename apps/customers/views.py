@@ -79,6 +79,13 @@ def myorders(req):
     req.session['badlogin'] = True
     return redirect('mainpage')
 
+def cancelord(req, id):
+    if req.method == 'POST':
+        cancelord = Order.objects.get(id=id)
+        cancelord.status = "Cancelled"
+        cancelord.save()
+    return redirect('myorders')
+
 def oneprod(req, id):
     if 'addedcart' in req.session and req.session['addedcart'] == True:
         messages.success(req, "Successfully added to cart", extra_tags="addedcart")
